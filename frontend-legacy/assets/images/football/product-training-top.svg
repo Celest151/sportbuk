@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
-  <rect width="1200" height="1500" fill="#12161a"/>
-  <path d="m350 260 150-85h200l150 85 175 200-145 125-80-90v650H400V495l-80 90-145-125z" fill="#252b31" stroke="#3b434b" stroke-width="8"/>
-  <path d="M400 330 800 900M800 330 400 900" stroke="#2563eb" stroke-width="26" opacity=".9"/>
-  <path d="M500 175q100 120 200 0" fill="none" stroke="#0b0d0f" stroke-width="28"/>
-  <text x="70" y="1400" fill="#92979f" font-family="Arial,sans-serif" font-size="34" letter-spacing="8">TRAINING TOP</text>
-</svg>

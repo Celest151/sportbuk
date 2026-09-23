@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
-  <rect width="1200" height="1500" fill="#171b20"/>
-  <path d="m350 250 150-80h200l150 80 180 210-155 120-75-85v650H400V495l-75 85-155-120z" fill="#f5f5f2"/>
-  <path d="M400 690h400v455H400z" fill="#ff3b30"/>
-  <path d="M500 170q100 130 200 0" fill="none" stroke="#171b20" stroke-width="28"/>
-  <text x="600" y="900" fill="#fff" font-family="Arial,sans-serif" font-size="180" font-weight="800" text-anchor="middle">10</text>
-  <text x="70" y="1400" fill="#92979f" font-family="Arial,sans-serif" font-size="34" letter-spacing="8">MATCH JERSEY</text>
-</svg>

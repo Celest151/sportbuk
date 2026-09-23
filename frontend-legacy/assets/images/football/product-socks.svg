@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
-  <rect width="1200" height="1500" fill="#15191d"/>
-  <path d="M330 230h210v650q0 120-110 170l-175 70-80-190 155-75zM660 230h210v625l155 75-80 190-175-70q-110-50-110-170z" fill="#f5f5f2"/>
-  <path d="M330 390h210M660 390h210" stroke="#ff3b30" stroke-width="42"/>
-  <text x="70" y="1400" fill="#92979f" font-family="Arial,sans-serif" font-size="34" letter-spacing="8">FOOTBALL SOCKS</text>
-</svg>
