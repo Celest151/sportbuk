@@ -2,7 +2,9 @@
 
 SPORTBUK is a football clothing and equipment catalog built as a Web Application course project. It uses a React, TypeScript, and Vite customer frontend with a Node.js, Express, Mongoose, and MongoDB backend.
 
-> Frontend rebuild status: the previous vanilla app is archived at `frontend-legacy/`. Active customer and admin experiences live in `frontend/`.
+> **Status: Under production.** This project is still being developed and is not production-ready. Customer checkout is not available in the active storefront.
+
+Active customer and admin experiences live in `frontend/`. The former vanilla frontend is archived locally as `frontend-legacy/` and is excluded from this repository, along with `slides/`.
 
 ## Current Scope
 
@@ -27,7 +29,7 @@ Active admin flow:
 
 Admin URL: `http://localhost:5173/admin`
 
-Checkout, orders, and payment code still exists in the repository, but checkout is intentionally removed from active customer navigation.
+Checkout, orders, and payment code still exist in the repository, but checkout is intentionally removed from active customer navigation.
 
 ## Technology
 
@@ -86,13 +88,15 @@ npm run seed:demo
 npm start
 ```
 
+Run `npm run seed:demo` only when initializing or deliberately resetting the demo catalog. It overwrites demo products, categories, and collections, including image references edited through the dashboard.
+
 Backend health endpoint:
 
 ```text
 http://127.0.0.1:5000/health
 ```
 
-## New Frontend Setup
+## Frontend Setup
 
 From `frontend`:
 
@@ -110,24 +114,22 @@ cd frontend
 npm run dev:full
 ```
 
-To inspect the archived site, serve the repository root and open files under `frontend-legacy/pages/`. It is retained only as a reference during the rebuild.
-
 ## Demo Data
 
-Run this command from `backend` whenever demo catalog data must be restored:
+Run this command from `backend` only to initialize or reset demo catalog data:
 
 ```bash
 npm run seed:demo
 ```
 
-The idempotent seed creates:
+The demo seed initializes:
 
 - 4 football categories
 - 8 football products with colors, sizes, prices, stock, and SKUs
 - 2 football collections
-- 12 size-guide records
+- 16 size-guide records
 
-The script removes only the known earlier generic demo-product slugs before inserting the football catalog. Source: `backend/scripts/seed-demo.js`.
+The script removes known earlier demo records, replaces size-guide records, and resets the images and other fields of seeded catalog entries. **Do not rerun it after customizing demo products, categories, collections, or their images unless you intend to reset them.** Source: `backend/scripts/seed-demo.js`.
 
 ## Demo Admin
 
@@ -140,10 +142,10 @@ These credentials are for local course demonstration only. Do not deploy them pu
 
 ## Frontend Configuration
 
-API origin:
+The API origin defaults to `http://127.0.0.1:5000`. To change it, set `VITE_API_ORIGIN` in `frontend/.env` (this file is ignored by Git):
 
-```text
-frontend/.env.example
+```env
+VITE_API_ORIGIN=http://127.0.0.1:5000
 ```
 
 Main frontend modules:
@@ -158,18 +160,15 @@ Main frontend modules:
 - Theme: `frontend/src/styles/global.css`
 - Demo products and collections: `backend/scripts/seed-demo.js`
 
-After changing seeded product text, rerun `npm run seed:demo` from `backend`.
+Seed data is intended for initial setup. Later catalog changes should be made in the admin dashboard.
 
 ## Replacing Football Images
 
-Managed product images should be uploaded through the backend and stored as `/uploads/...` paths. The frontend resolves these paths against `VITE_API_ORIGIN` and uses remote fallback photography when a seeded image is unavailable.
+Upload product galleries, category images, and collection images through the admin dashboard. Managed images are stored under `backend/uploads/` and referenced in MongoDB as `/uploads/...` URLs. The frontend resolves these URLs against `VITE_API_ORIGIN`; demo images in `frontend/public/assets/` are tracked separately.
 
-To use a different filename or file type such as PNG, JPG, or WEBP:
+`backend/uploads/` and MongoDB data are not stored in Git. A GitHub clone needs its own MongoDB data and uploaded files (or new uploads through the dashboard). Keep a backup of both if you move the catalog to another machine.
 
-1. Upload the image through the relevant admin product, category, or collection flow.
-2. Confirm the API returns its `/uploads/...` path.
-3. Update `backend/scripts/seed-demo.js` if demo records must use the same image.
-4. Run `npm run seed:demo` from `backend` after seed changes.
+For a reproducible demo catalog, update assets under `frontend/public/assets/` and the matching paths in `backend/scripts/seed-demo.js` **before** seeding a fresh database; do not rerun the seed over dashboard-customized records.
 
 ## Main API Routes
 
@@ -210,7 +209,7 @@ Customer pages follow the photography-first commerce system in `DESIGN.md` and r
 ## Testing Status
 
 - Demo seed script syntax verified with `node --check`.
-- Seed rerun verified as idempotent.
+- Seed can be rerun for a fresh demo reset, but it overwrites customized demo records.
 - MongoDB verified with 8 football products, 4 categories, and 2 collections.
 - Seeded catalog and storefront image references use local football assets; no Unsplash image references remain.
 - No Jest test files currently exist; `npm test` reports `No tests found`.
