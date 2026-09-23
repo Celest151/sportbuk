@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#14181c"/>
+  <circle cx="600" cy="700" r="390" fill="#f5f5f2" stroke="#343a40" stroke-width="14"/>
+  <path d="m600 495 135 98-52 159H517l-52-159zM600 310v185M970 580l-235 13M830 1010 683 752M370 1010l147-258M230 580l235 13" fill="#20252a" stroke="#20252a" stroke-width="18"/>
+  <path d="M600 310 440 390 230 580l40 225 100 205 230 80 230-80 100-205 40-225-210-190z" fill="none" stroke="#ff3b30" stroke-width="12"/>
+  <text x="70" y="1400" fill="#92979f" font-family="Arial,sans-serif" font-size="34" letter-spacing="8">MATCH BALL</text>
+</svg>

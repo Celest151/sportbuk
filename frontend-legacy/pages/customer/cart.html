@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Bag - SPORTBUK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/customer/cart-page.css">
+    <link rel="stylesheet" href="../../css/customer/sport-theme.css">
+</head>
+<body>
+    <!-- ==================== HEADER COMPONENT ==================== -->
+    <div id="header"></div>
+
+    <!-- ==================== BREADCRUMB ==================== -->
+    <div class="breadcrumb">
+        <a href="index.html">Trang chủ</a> / 
+        <span>Giỏ hàng</span>
+    </div>
+
+    <!-- ==================== CART SECTION ==================== -->
+    <section class="cart-container">
+        <h1>TRAINING BAG</h1>
+
+        <div class="cart-wrapper">
+            <!-- Cart Items -->
+            <div>
+                <div id="cartTableContainer">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th width="5%"><input type="checkbox" id="selectAll"></th>
+                                <th width="45%">Sản Phẩm</th>
+                                <th width="15%">Giá</th>
+                                <th width="20%">Số Lượng</th>
+                                <th width="10%">Tổng</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartItemsList">
+                            <!-- Cart items will be loaded dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="emptyCart" style="display: none;" class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Giỏ hàng trống</h2>
+                    <p>Hãy thêm một số sản phẩm vào giỏ hàng của bạn</p>
+                    <a href="product-list.html" class="btn btn-primary">Tiếp tục mua sắm</a>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <aside class="cart-summary">
+                <h3>Tổng Hợp Đơn Hàng</h3>
+
+                <div class="summary-row">
+                    <span>Tổng tiền hàng:</span>
+                    <span id="subtotal">0 đ</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Giảm giá:</span>
+                    <span id="discount" style="color: var(--primary-color);">0 đ</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Vận chuyển:</span>
+                    <span id="shipping" style="color: var(--primary-color);">Miễn phí</span>
+                </div>
+
+                <div class="summary-row total">
+                    <strong>Tổng cộng:</strong>
+                    <strong id="total" style="color: var(--primary-color); font-size: 18px;">0 đ</strong>
+                </div>
+
+                <a href="product-list.html" class="btn btn-primary">Khám phá thêm sản phẩm</a>
+                <a href="product-list.html" class="btn btn-outline">Tiếp tục mua sắm</a>
+
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-truck"></i>
+                        <div>
+                            <strong>Miễn phí vận chuyển</strong>
+                            <p>Cho đơn hàng trên 500.000 đ</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-undo"></i>
+                        <div>
+                            <strong>30 ngày đổi trả</strong>
+                            <p>Nếu không hài lòng</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Thanh toán an toàn</strong>
+                            <p>Bảo mật 100%</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER COMPONENT ==================== -->
+    <div id="footer"></div>
+
+    <script src="../../js/common/config.js"></script>
+    <script src="../../js/components/load-components.js"></script>
+    <script src="../../js/shared.js"></script>
+    <script>
+        let cartItems = [];
+        let selectedKeys = new Set();
+
+        function readCartItems() {
+            return window.getStoredCart();
+        }
+
+        function persistCartItems() {
+            window.persistStoredCart(cartItems);
+        }
+
+        function formatCurrency(value) {
+            return `${Number(value || 0).toLocaleString('vi-VN')} đ`;
+        }
+
+        function getItemKey(item) {
+            return [item.productId, item.size || 'M', item.color || 'Mặc định'].join('__');
+        }
+
+        function resolveImageUrl(path) {
+            return window.CONFIG?.resolveMediaUrl(path, '../../assets/images/football/hero-gear.svg') || '../../assets/images/football/hero-gear.svg';
+        }
+
+        function updateSummary() {
+            const activeItems = cartItems.filter((item) => selectedKeys.has(getItemKey(item)));
+            const subtotal = activeItems.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
+            const discount = 0;
+            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+            document.getElementById('discount').textContent = formatCurrency(discount);
+            document.getElementById('total').textContent = formatCurrency(subtotal - discount);
+            document.getElementById('shipping').textContent = subtotal > 0 ? 'Miễn phí' : '0 đ';
+        }
+
+        function renderCart() {
+            const tbody = document.getElementById('cartItemsList');
+            const emptyCart = document.getElementById('emptyCart');
+            const cartTableContainer = document.getElementById('cartTableContainer');
+
+            cartItems = readCartItems();
+            if (!cartItems.length) {
+                tbody.innerHTML = '';
+                emptyCart.style.display = 'block';
+                cartTableContainer.style.display = 'none';
+                selectedKeys = new Set();
+                updateSummary();
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            cartTableContainer.style.display = 'block';
+            if (!selectedKeys.size) {
+                selectedKeys = new Set(cartItems.map(getItemKey));
+            }
+
+            tbody.innerHTML = cartItems.map((item) => {
+                const itemKey = getItemKey(item);
+                const quantity = Number(item.quantity) || 1;
+                const price = Number(item.price) || 0;
+                return `
+                    <tr>
+                        <td>
+                            <input class="item-checkbox" type="checkbox" data-key="${itemKey}" ${selectedKeys.has(itemKey) ? 'checked' : ''}>
+                        </td>
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-image">
+                                    <img src="${resolveImageUrl(item.image)}" alt="${item.name}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                                </div>
+                                <div class="product-details">
+                                    <h3>${item.name || 'Sản phẩm'}</h3>
+                                    <p>Size: ${item.size || 'M'} | Màu: ${item.color || 'Mặc định'}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${formatCurrency(price)}</td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="qty-btn" type="button" onclick="changeQuantity('${itemKey}', -1)">-</button>
+                                <input class="qty-input" type="text" value="${quantity}" readonly>
+                                <button class="qty-btn" type="button" onclick="changeQuantity('${itemKey}', 1)">+</button>
+                            </div>
+                        </td>
+                        <td>${formatCurrency(price * quantity)}</td>
+                        <td>
+                            <button class="delete-btn" type="button" onclick="removeCartItem('${itemKey}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('selectAll').checked = cartItems.length > 0 && cartItems.every((item) => selectedKeys.has(getItemKey(item)));
+            tbody.querySelectorAll('.item-checkbox').forEach((checkbox) => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        selectedKeys.add(this.dataset.key);
+                    } else {
+                        selectedKeys.delete(this.dataset.key);
+                    }
+                    document.getElementById('selectAll').checked = cartItems.every((item) => selectedKeys.has(getItemKey(item)));
+                    updateSummary();
+                });
+            });
+
+            updateSummary();
+        }
+
+        function changeQuantity(itemKey, delta) {
+            cartItems = readCartItems().map((item) => {
+                if (getItemKey(item) !== itemKey) {
+                    return item;
+                }
+
+                return {
+                    ...item,
+                    quantity: Math.max(1, (Number(item.quantity) || 1) + delta)
+                };
+            });
+
+            persistCartItems();
+            renderCart();
+        }
+
+        function removeCartItem(itemKey) {
+            cartItems = readCartItems().filter((item) => getItemKey(item) !== itemKey);
+            selectedKeys.delete(itemKey);
+            persistCartItems();
+            renderCart();
+        }
+
+        function setupCartEvents() {
+            document.getElementById('selectAll').addEventListener('change', function() {
+                if (this.checked) {
+                    selectedKeys = new Set(cartItems.map(getItemKey));
+                } else {
+                    selectedKeys.clear();
+                }
+                renderCart();
+            });
+        }
+
+        window.changeQuantity = changeQuantity;
+        window.removeCartItem = removeCartItem;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (!window.requireCustomerAuth?.()) {
+                return;
+            }
+
+            await loadCommonComponents();
+            updateCartBadge();
+            updateHeaderAuth();
+            setupCartEvents();
+            renderCart();
+        });
+    </script>
+</body>
+</html>

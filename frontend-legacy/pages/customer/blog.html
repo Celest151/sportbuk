@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Journal - SPORTBUK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <style>
+        :root {
+            --blog-accent: #ff3b30;
+            --blog-dark: #f5f5f2;
+            --blog-muted: #92979f;
+            --blog-surface: #15181c;
+            --blog-cream: #0b0d0f;
+            --blog-border: #2a2e33;
+            --blog-shadow: 0 22px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background: #0b0d0f;
+            color: var(--blog-dark);
+        }
+
+        .page-shell {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px 72px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+            gap: 28px;
+            padding: 44px 0 28px;
+        }
+
+        .hero-card,
+        .spotlight-card,
+        .story-card,
+        .mini-card,
+        .newsletter {
+            background: #15181c;
+            border: 1px solid var(--blog-border);
+            backdrop-filter: blur(14px);
+            box-shadow: var(--blog-shadow);
+        }
+
+        .hero-card {
+            position: relative;
+            min-height: 520px;
+            border-radius: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            background:
+                linear-gradient(180deg, rgba(31, 41, 51, 0.08) 0%, rgba(31, 41, 51, 0.72) 100%),
+                url('../../assets/images/football/hero-training.svg') center/cover no-repeat;
+        }
+
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            inset: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 38px;
+            color: #fff;
+        }
+
+        .eyebrow,
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .eyebrow {
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(36px, 5vw, 64px);
+            line-height: 1.02;
+            max-width: 9ch;
+            margin-bottom: 18px;
+        }
+
+        .hero-copy {
+            max-width: 54ch;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-top: 22px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.86);
+        }
+
+        .spotlight-card {
+            border-radius: 0;
+            padding: 28px;
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: #15181c;
+        }
+
+        .panel-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 28px;
+        }
+
+        .spotlight-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .mini-card {
+            border-radius: 0;
+            padding: 18px;
+            border: 1px solid var(--blog-border);
+            cursor: pointer;
+            transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+        }
+
+        .mini-card:hover,
+        .story-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 46px rgba(31, 41, 51, 0.14);
+            border-color: rgba(178, 58, 72, 0.28);
+        }
+
+        .mini-card h3,
+        .story-card h3 {
+            font-size: 20px;
+            line-height: 1.3;
+            margin: 10px 0 8px;
+        }
+
+        .mini-card p,
+        .story-card p,
+        .newsletter p,
+        .toolbar p {
+            color: var(--blog-muted);
+            font-size: 14px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+            margin: 10px 0 28px;
+            padding: 18px 22px;
+            background: #15181c;
+            border: 1px solid var(--blog-border);
+            border-radius: 0;
+            box-shadow: 0 18px 40px rgba(31, 41, 51, 0.08);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            border: 1px solid var(--blog-border);
+            background: transparent;
+            color: var(--blog-dark);
+            padding: 10px 16px;
+            border-radius: 0;
+            cursor: pointer;
+            font: inherit;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .filter-chip.active,
+        .filter-chip:hover {
+            background: var(--blog-accent);
+            color: #fff;
+            border-color: var(--blog-accent);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .story-card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+            overflow: hidden;
+            border: 1px solid var(--blog-border);
+            transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+        }
+
+        .story-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .story-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.36) 100%);
+        }
+
+        .story-body {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 250px;
+        }
+
+        .tag {
+            background: rgba(255, 59, 48, 0.12);
+            color: var(--blog-accent);
+            border: 1px solid rgba(255, 59, 48, 0.3);
+            width: fit-content;
+        }
+
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--blog-muted);
+            margin-top: auto;
+            padding-top: 14px;
+            border-top: 1px solid var(--blog-border);
+        }
+
+        .read-button {
+            border: none;
+            background: transparent;
+            color: var(--blog-accent);
+            padding: 0;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .newsletter {
+            margin-top: 34px;
+            border-radius: 0;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 20px;
+            align-items: center;
+            background:
+                linear-gradient(135deg, #15181c 0%, #20242a 100%);
+            color: #fff;
+        }
+
+        .newsletter .panel-title,
+        .newsletter p {
+            color: #fff;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .newsletter-form input {
+            min-width: 260px;
+            padding: 14px 18px;
+            border-radius: 0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            font: inherit;
+        }
+
+        .newsletter-form input::placeholder {
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        .newsletter-form button {
+            border: none;
+            border-radius: 0;
+            padding: 14px 22px;
+            background: var(--blog-accent);
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 34px;
+            text-align: center;
+            border-radius: 0;
+            background: #15181c;
+            border: 1px dashed var(--blog-border);
+            color: var(--blog-muted);
+        }
+
+        @media (max-width: 1024px) {
+            .hero,
+            .newsletter {
+                grid-template-columns: 1fr;
+            }
+
+            .story-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .newsletter-form {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 0 16px 56px;
+            }
+
+            .hero-card {
+                min-height: 460px;
+            }
+
+            .hero-content {
+                padding: 26px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../../css/customer/sport-theme.css">
+</head>
+<body>
+    <div id="header"></div>
+
+    <main class="page-shell">
+        <section class="hero">
+            <article class="hero-card">
+                <div class="hero-content">
+                    <span class="eyebrow"><i class="fas fa-futbol"></i> Football Journal</span>
+                    <h1 class="hero-title">Đọc trận đấu. Làm chủ từng khoảnh khắc.</h1>
+                    <p class="hero-copy">SPORTBUK Journal chia sẻ cách chọn football gear, cải thiện kỹ thuật và chuẩn bị tốt hơn cho từng buổi tập lẫn ngày thi đấu.</p>
+                    <div class="hero-meta">
+                        <span><i class="far fa-calendar"></i> Cập nhật mỗi tuần</span>
+                        <span><i class="far fa-bookmark"></i> Gear, skills và matchday</span>
+                        <span><i class="far fa-clock"></i> Đọc nhanh trong 4 phút</span>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="spotlight-card">
+                <div>
+                    <span class="tag">Mới nổi bật</span>
+                    <h2 class="panel-title">Gợi ý đọc hôm nay</h2>
+                </div>
+                <div class="spotlight-list" id="spotlightList"></div>
+            </aside>
+        </section>
+
+        <section class="toolbar">
+            <div>
+                <h2 class="panel-title">Bài viết mới</h2>
+                <p>Chọn chủ đề: kỹ thuật, trang bị, tập luyện hoặc chiến thuật.</p>
+            </div>
+            <div class="toolbar-actions" id="filterChips"></div>
+        </section>
+
+        <section class="story-grid" id="storyGrid"></section>
+
+        <section class="newsletter">
+            <div>
+                <h2 class="panel-title">Nhận Football Brief mỗi thứ Sáu</h2>
+                <p>Một email ngắn về bài tập, matchday checklist và football gear mới.</p>
+            </div>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="Nhập email của bạn" required>
+                <button type="submit">Đăng ký</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script src="../../js/common/config.js"></script>
+    <script src="../../js/shared.js"></script>
+    <script src="../../js/components/load-components.js"></script>
+    <script>
+        const blogPosts = [
+            {
+                id: 1,
+                category: 'Gear',
+                title: 'Cách chọn áo bóng đá đúng form và đúng cường độ thi đấu',
+                excerpt: 'Form áo, vùng mesh và khả năng thoát ẩm ảnh hưởng trực tiếp đến sự thoải mái trong suốt 90 phút.',
+                image: '../../assets/images/football/product-match-jersey.svg',
+                author: 'SPORTBUK Lab',
+                date: '03/04/2026',
+                readTime: '4 phút'
+            },
+            {
+                id: 2,
+                category: 'Skills',
+                title: 'Buổi tập first touch 20 phút cho cầu thủ phong trào',
+                excerpt: 'Bốn bài chạm bước một đơn giản giúp bạn nhận bóng gọn hơn và đưa ra quyết định nhanh hơn dưới áp lực.',
+                image: '../../assets/images/football/hero-training.svg',
+                author: 'SPORTBUK Coach',
+                date: '31/03/2026',
+                readTime: '5 phút'
+            },
+            {
+                id: 3,
+                category: 'Matchday',
+                title: 'Matchday checklist: 8 món không nên quên trước giờ bóng lăn',
+                excerpt: 'Từ tất, bảo vệ ống đồng đến nước điện giải: chuẩn bị túi đồ nhanh nhưng không bỏ sót món quan trọng.',
+                image: '../../assets/images/football/hero-gear.svg',
+                author: 'SPORTBUK Team',
+                date: '28/03/2026',
+                readTime: '4 phút'
+            },
+            {
+                id: 4,
+                category: 'Goalkeeper',
+                title: 'Chọn găng tay thủ môn theo mặt sân và thời tiết',
+                excerpt: 'Latex mềm, độ dày lòng bàn tay và kiểu quấn cổ tay tạo khác biệt lớn về độ bám và kiểm soát bóng.',
+                image: '../../assets/images/football/product-goalkeeper-gloves.svg',
+                author: 'Last Line Lab',
+                date: '24/03/2026',
+                readTime: '6 phút'
+            },
+            {
+                id: 5,
+                category: 'Training',
+                title: 'Tăng tốc 5 mét đầu: nền tảng cho mọi pha tranh chấp',
+                excerpt: 'Tư thế xuất phát, góc nghiêng cơ thể và ba bước đầu tiên quyết định khả năng thắng bóng trong không gian hẹp.',
+                image: '../../assets/images/football/hero-matchday.svg',
+                author: 'SPORTBUK Coach',
+                date: '20/03/2026',
+                readTime: '3 phút'
+            },
+            {
+                id: 6,
+                category: 'Tactics',
+                title: 'Hiểu pressing trigger trong đội hình 5 người',
+                excerpt: 'Một đường chuyền ngang chậm hoặc pha đỡ bước một lỗi là tín hiệu để cả đội cùng dâng lên gây áp lực.',
+                image: '../../assets/images/football/hero-training.svg',
+                author: 'SPORTBUK Journal',
+                date: '18/03/2026',
+                readTime: '5 phút'
+            }
+        ];
+
+        let activeCategory = 'Tất cả';
+
+        function renderFilterChips() {
+            const categories = ['Tất cả', ...new Set(blogPosts.map((post) => post.category))];
+            const chips = document.getElementById('filterChips');
+
+            chips.innerHTML = categories.map((category) => `
+                <button class="filter-chip ${category === activeCategory ? 'active' : ''}" data-category="${category}">
+                    ${category}
+                </button>
+            `).join('');
+
+            chips.querySelectorAll('.filter-chip').forEach((button) => {
+                button.addEventListener('click', () => {
+                    activeCategory = button.dataset.category;
+                    renderFilterChips();
+                    renderStories();
+                });
+            });
+        }
+
+        function renderSpotlight() {
+            const spotlight = document.getElementById('spotlightList');
+            spotlight.innerHTML = blogPosts.slice(0, 3).map((post) => `
+                <article class="mini-card" onclick="focusStory(${post.id})">
+                    <span class="tag">${post.category}</span>
+                    <h3>${post.title}</h3>
+                    <p>${post.excerpt}</p>
+                </article>
+            `).join('');
+        }
+
+        function renderStories() {
+            const grid = document.getElementById('storyGrid');
+            const stories = activeCategory === 'Tất cả'
+                ? blogPosts
+                : blogPosts.filter((post) => post.category === activeCategory);
+
+            if (stories.length === 0) {
+                grid.innerHTML = '<div class="empty-state">Chưa có bài viết cho chủ đề này.</div>';
+                return;
+            }
+
+            grid.innerHTML = stories.map((post) => `
+                <article class="story-card" id="story-${post.id}">
+                    <div class="story-image" style="background-image: url('${post.image}')"></div>
+                    <div class="story-body">
+                        <span class="tag">${post.category}</span>
+                        <h3>${post.title}</h3>
+                        <p>${post.excerpt}</p>
+                        <button class="read-button" type="button" onclick="openArticle(${post.id})">Đọc bài viết <i class="fas fa-arrow-right"></i></button>
+                        <div class="story-meta">
+                            <span>${post.author}</span>
+                            <span>${post.date} · ${post.readTime}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function focusStory(postId) {
+            const element = document.getElementById(`story-${postId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function openArticle(postId) {
+            const post = blogPosts.find((item) => item.id === postId);
+            if (!post) {
+                return;
+            }
+
+            alert(`${post.title}\n\n${post.excerpt}\n\nBài viết đầy đủ đang được cập nhật.`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCommonComponents();
+            renderFilterChips();
+            renderSpotlight();
+            renderStories();
+
+            document.getElementById('newsletterForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const email = document.getElementById('newsletterEmail').value.trim();
+                if (!email) {
+                    return;
+                }
+
+                localStorage.setItem('sportbuk_football_newsletter_email', email);
+                alert('Đăng ký Football Brief thành công. Email đã được lưu trên trình duyệt này.');
+                event.target.reset();
+            });
+        });
+    </script>
+</body>
+</html>

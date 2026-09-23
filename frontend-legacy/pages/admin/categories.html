@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Danh Mục - SPORTBUK Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/admin/categories.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">SPORTBUK</div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Sản Phẩm</a></li>
+                <li><a href="categories.html" class="active"><i class="fas fa-tags"></i> Danh Mục</a></li>
+                <li><a href="collections.html"><i class="fas fa-layer-group"></i> Collection</a></li>
+                <li><a href="sizes.html"><i class="fas fa-ruler-combined"></i> Bảng Size</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Đơn Hàng</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> Người Dùng</a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> Thống Kê</a></li>
+                <li><a href="chats.html"><i class="fas fa-comments"></i> Chat</a></li>
+                <li><hr style="margin: 20px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);"></li>
+                <li><a href="../customer/index.html"><i class="fas fa-arrow-left"></i> Về Trang Chủ</a></li>
+                <li><a href="javascript:logout();"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Quản Lý Danh Mục</h1>
+                <button class="btn" onclick="openCategoryModal()"><i class="fas fa-plus"></i> Thêm Danh Mục</button>
+            </div>
+
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY MODAL -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Thêm Danh Mục Mới</h2>
+            </div>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label>Tên Danh Mục *</label>
+                    <input type="text" id="categoryName" placeholder="Nhập tên danh mục" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Mô Tả</label>
+                    <textarea id="categoryDescription" placeholder="Nhập mô tả danh mục"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Hình Ảnh Đại Diện</label>
+                    <input type="file" id="categoryImage" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="categoryActive" checked>
+                        Kích hoạt danh mục này
+                    </label>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeCategoryModal()">Hủy</button>
+                    <button type="submit" class="btn-submit">Lưu Danh Mục</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../js/common/config.js"></script>
+    <script src="../../js/common/api.js"></script>
+    <script>
+        let allCategories = [];
+        let editingCategoryId = null;
+
+        function getErrorMessage(error, fallback = 'Có lỗi xảy ra') {
+            return error?.message || fallback;
+        }
+
+        function getCategoryImageUrl(category) {
+            return window.CONFIG?.resolveMediaUrl(
+                category.image,
+                'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Crect fill=%22%23ddd%22 width=%22150%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3E%F0%9F%93%B7%3C/text%3E%3C/svg%3E'
+            ) || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Crect fill=%22%23ddd%22 width=%22150%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2240%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3E%F0%9F%93%B7%3C/text%3E%3C/svg%3E';
+        }
+
+        // Load categories from API
+        async function loadCategories() {
+            try {
+                const data = await window.CategoryAPI.getCategories();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    allCategories = data.data;
+                    renderCategories(allCategories);
+                } else {
+                    document.getElementById('categoriesGrid').innerHTML = 
+                        '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">Không có danh mục</div>';
+                }
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                document.getElementById('categoriesGrid').innerHTML = 
+                    `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: red;">${getErrorMessage(error, 'Lỗi tải dữ liệu')}</div>`;
+            }
+        }
+
+        // Render categories to grid
+        function renderCategories(categories) {
+            const grid = document.getElementById('categoriesGrid');
+            
+            if (categories.length === 0) {
+                grid.innerHTML = '<div class="empty-state">Không có danh mục</div>';
+                return;
+            }
+            
+            grid.innerHTML = categories.map(category => {
+                const imageUrl = getCategoryImageUrl(category);
+                
+                return `
+                    <div class="category-card">
+                        <div class="category-icon" style="background-image: url('${imageUrl}'); background-color: #f5f5f5;">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-name">${category.name}</div>
+                            <div class="category-info">
+                                <span>${category.description || 'Không có mô tả'}</span>
+                                <span>Cập nhật: ${new Date(category.updatedAt).toLocaleDateString('vi-VN')}</span>
+                            </div>
+                            <div class="category-actions">
+                                <button class="edit-btn" onclick="editCategory('${category._id}')">Sửa</button>
+                                <button class="delete-btn" onclick="deleteCategory('${category._id}')">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openCategoryModal() {
+            editingCategoryId = null;
+            document.getElementById('categoryModal').classList.add('active');
+            document.getElementById('modalTitle').textContent = 'Thêm Danh Mục Mới';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryImage').value = '';
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+
+        function editCategory(id) {
+            const category = allCategories.find(c => c._id === id);
+            if (!category) {
+                alert('Không tìm thấy danh mục');
+                return;
+            }
+            
+            editingCategoryId = id;
+            document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Danh Mục';
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categoryDescription').value = category.description || '';
+            document.getElementById('categoryActive').checked = category.isActive !== false;
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function deleteCategory(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa danh mục này?')) {
+                deleteFromAPI(id);
+            }
+        }
+
+        // Delete category via API
+        async function deleteFromAPI(id) {
+            try {
+                const data = await window.CategoryAPI.deleteCategory(id);
+                if (data.success) {
+                    alert('Đã xóa danh mục thành công!');
+                    await loadCategories();
+                } else {
+                    alert('Lỗi: ' + (data.message || 'Không thể xóa'));
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                alert('Lỗi khi xóa danh mục: ' + getErrorMessage(error, 'Không thể xóa danh mục'));
+            }
+        }
+
+        // Handle form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!validateAdminAccess()) {
+                return;
+            }
+
+            loadCategories();
+
+            // Form submit
+            document.getElementById('categoryForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('categoryName').value.trim();
+                if (!name) {
+                    alert('Vui lòng nhập tên danh mục');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('description', document.getElementById('categoryDescription').value);
+                formData.append('isActive', document.getElementById('categoryActive').checked);
+                
+                const imageFile = document.getElementById('categoryImage').files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                }
+
+                try {
+                    const data = editingCategoryId
+                        ? await window.CategoryAPI.updateCategoryForm(editingCategoryId, formData)
+                        : await window.CategoryAPI.createCategoryForm(formData);
+                    console.log('API Response:', data);
+                    
+                    if (data.success) {
+                        alert(editingCategoryId ? 'Cập nhật danh mục thành công!' : 'Thêm danh mục thành công!');
+                        closeCategoryModal();
+                        await loadCategories();
+                    } else {
+                        alert('Lỗi: ' + (data.message || 'Không thể lưu'));
+                    }
+                } catch (error) {
+                    console.error('Error saving category:', error);
+                    alert('Lỗi khi lưu danh mục: ' + getErrorMessage(error, 'Không thể lưu danh mục'));
+                }
+            });
+        });
+
+        document.getElementById('categoryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCategoryModal();
+            }
+        });
+
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                clearAuthState();
+                window.location.replace('../../pages/auth/login.html');
+            }
+        }
+
+        function clearAuthState() {
+            localStorage.removeItem('sportbuk_auth_token');
+            localStorage.removeItem('sportbuk_refresh_token');
+            localStorage.removeItem('sportbuk_user_info');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+        }
+
+        function validateAdminAccess(showUnauthorizedMessage = true) {
+            const userInfo = localStorage.getItem('sportbuk_user_info') || localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('sportbuk_auth_token') || localStorage.getItem('authToken');
+
+            if (!userInfo || !authToken) {
+                window.location.replace('../../pages/auth/login.html');
+                return false;
+            }
+
+            try {
+                const user = JSON.parse(userInfo);
+                if (user.role !== 'admin') {
+                    if (showUnauthorizedMessage) {
+                        alert('Bạn không có quyền truy cập trang này!');
+                    }
+                    window.location.replace('../../pages/customer/index.html');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error parsing user info:', error);
+                clearAuthState();
+                window.location.replace('../../pages/auth/login.html');
+                return false;
+            }
+
+            return true;
+        }
+
+        window.addEventListener('pageshow', function() {
+            validateAdminAccess(false);
+        });
+
+        window.openCategoryModal = openCategoryModal;
+        window.closeCategoryModal = closeCategoryModal;
+        window.editCategory = editCategory;
+        window.deleteCategory = deleteCategory;
+        window.logout = logout;
+    </script>
+</body>
+</html>

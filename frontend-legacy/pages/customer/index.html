@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORTBUK - Built To Move</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/customer/index.css">
+    <link rel="stylesheet" href="../../css/customer/sport-theme.css">
+</head>
+<body class="home-page">
+    <!-- ==================== HEADER COMPONENT ==================== -->
+    <div id="header"></div>
+
+    <!-- ==================== HERO BANNER ==================== -->
+    <section class="hero">
+        <div class="hero-slider">
+            <!-- Slide 1 -->
+            <div class="hero-slide active">
+                <div class="hero-image" style="background-image: url('../../assets/images/football/hero-matchday.svg');"></div>
+                <div class="hero-content">
+                    <div class="hero-label">NEW MATCHDAY SYSTEM</div>
+                    <h1 class="hero-title">PLAY<br>WITHOUT<br>LIMITS</h1>
+                    <div class="hero-date">90 MINUTES. ONE MISSION.</div>
+                    <a class="hero-cta" href="product-list.html">SHOP FOOTBALL <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="hero-slide">
+                <div class="hero-image" style="background-image: url('../../assets/images/football/hero-training.svg');"></div>
+                <div class="hero-content">
+                    <div class="hero-label">TRAINING COLLECTION 2026</div>
+                    <h1 class="hero-title">OWN<br>THE PITCH</h1>
+                    <div class="hero-date">QUICKER FEET. SHARPER PLAY.</div>
+                    <a class="hero-cta" href="collections.html">EXPLORE KITS <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="hero-slide">
+                <div class="hero-image" style="background-image: url('../../assets/images/football/hero-goalkeeper.svg');"></div>
+                <div class="hero-content">
+                    <div class="hero-label">GOALKEEPER COLLECTION</div>
+                    <h1 class="hero-title">DEFEND<br>EVERY<br>INCH</h1>
+                    <div class="hero-date">CONTROL. GRIP. COURAGE.</div>
+                    <a class="hero-cta" href="product-list.html">SHOP GOALKEEPER <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider Controls -->
+        <div class="slider-dots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+        </div>
+
+        <div class="slider-arrows">
+            <button class="arrow" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+            <button class="arrow" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- ==================== CATEGORY SECTION ==================== -->
+    <section class="categories">
+        <p class="section-kicker">BUILD YOUR KIT</p>
+        <h2 class="categories-title">FOOTBALL BY CATEGORY</h2>
+        <div class="categories-grid" id="categoriesGrid">
+            <!-- Categories will be loaded from API -->
+        </div>
+    </section>
+
+    <section class="collections-preview">
+        <div class="collections-preview-header">
+            <div>
+                <p class="collections-preview-eyebrow">ENGINEERED FOR ACTION</p>
+                <h2 class="collections-preview-title">FEATURED DROPS</h2>
+            </div>
+            <a class="collections-preview-link" href="collections.html">Xem tất cả</a>
+        </div>
+        <div class="collections-preview-grid" id="collectionsPreviewGrid">
+            <div class="collections-preview-status">Đang tải bộ sưu tập...</div>
+        </div>
+    </section>
+
+    <!-- ==================== PROMOTION BANNER ==================== -->
+    <section class="promotion">
+        <div class="promo-content">
+            <h3>MATCHDAY ESSENTIALS</h3>
+            <h2>NO FEAR.<br>JUST FOOTBALL.</h2>
+            <div class="promo-percent">20%<span style="font-size: 48px;"> OFF</span></div>
+            <p class="promo-subtitle">Selected training gear. While stocks last.</p>
+        </div>
+        <div class="promo-image" style="background: url('../../assets/images/football/hero-gear.svg') center/cover no-repeat; display: flex; align-items: flex-end; justify-content: center; min-height: 400px;">
+        </div>
+    </section>
+
+    <!-- ==================== PRODUCT SECTION ==================== -->
+    <section class="products">
+        <p class="section-kicker">FRESH IN</p>
+        <h2 class="section-title">LATEST FOOTBALL GEAR</h2>
+        <div class="products-grid" id="productsGrid">
+            <div class="products-status">Đang tải sản phẩm...</div>
+        </div>
+    </section>
+
+    <!-- ==================== CTA SECTION ==================== -->
+    <section class="cta-section">
+        <p class="section-kicker">YOUR NEXT SESSION STARTS HERE</p>
+        <h2 class="cta-title">BUILT TO MOVE.<br>READY WHEN YOU ARE.</h2>
+        <p class="cta-subtitle">Match kits and training essentials engineered for every touch, tackle and finish.</p>
+        <a class="btn-view-all" href="product-list.html">SHOP ALL GEAR</a>
+    </section>
+
+    
+    <!-- ==================== FOOTER COMPONENT ==================== -->
+    <div id="footer"></div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script src="../../js/common/config.js"></script>
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/components/load-components.js"></script>
+    <script src="../../js/shared.js"></script>
+    <script>
+        let currentSlide = 0;
+        let slideTimer = null;
+        const SLIDE_INTERVAL_MS = 3000;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadCommonComponents();
+            updateCartBadge();
+            updateWishlistBadge();
+            updateHeaderAuth();
+            await window.syncWishlistFromServer?.({ mergeLocal: true });
+            await loadCategories();
+            await loadFeaturedCollections();
+            await loadHomepageProducts();
+        });
+
+        // ==================== Category Loading ==================== 
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${window.CONFIG.API_BASE_URL}/categories`);
+                const data = await response.json();
+
+                if (data.success && Array.isArray(data.data)) {
+                    window.homepageCategories = data.data;
+                    renderCategories(data.data);
+                } else {
+                    console.error('Failed to load categories:', data.message);
+                }
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        function renderCategories(categories) {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+
+            if (categories.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Không có danh mục nào</p>';
+                return;
+            }
+
+            categories.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                categoryItem.style.cursor = 'pointer';
+                categoryItem.link = category;
+
+                let imageUrl = '';
+                const rawCategoryImage = typeof category.image === 'object'
+                    ? category.image?.url || category.image?.src || category.image?.image || ''
+                    : category.image;
+                imageUrl = window.CONFIG?.resolveMediaUrl(rawCategoryImage, '') || '';
+
+                categoryItem.innerHTML = `
+                    <div class="category-circle">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${category.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+                        <span class="category-fallback" style="display: ${imageUrl ? 'none' : 'flex'};">${String(category.name || '?').charAt(0).toUpperCase()}</span>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                `;
+
+                // Add click handler to navigate to product list filtered by category
+                categoryItem.addEventListener('click', function() {
+                    window.location.href = `product-list.html?category=${encodeURIComponent(category.slug || category._id)}`;
+                });
+
+                grid.appendChild(categoryItem);
+            });
+        }
+
+        async function loadFeaturedCollections() {
+            const grid = document.getElementById('collectionsPreviewGrid');
+
+            try {
+                const response = await window.CollectionAPI.getCollections({ featured: true, limit: 3 });
+                const collections = Array.isArray(response?.data) ? response.data : [];
+                renderFeaturedCollections(collections);
+            } catch (error) {
+                console.error('Error loading featured collections:', error);
+                grid.innerHTML = '<div class="collections-preview-status">Không thể tải bộ sưu tập lúc này.</div>';
+            }
+        }
+
+        function renderFeaturedCollections(collections) {
+            const grid = document.getElementById('collectionsPreviewGrid');
+
+            if (!collections.length) {
+                grid.innerHTML = '<div class="collections-preview-status">Chưa có bộ sưu tập nổi bật.</div>';
+                return;
+            }
+
+            grid.innerHTML = collections.map((collection) => {
+                const imageUrl = window.CONFIG?.resolveMediaUrl(collection.image, '../../assets/images/football/hero-gear.svg') || '../../assets/images/football/hero-gear.svg';
+                return `
+                    <article class="collection-preview-card" onclick="openCollectionDetail('${collection.slug || collection._id}')">
+                        <div class="collection-preview-image-wrap">
+                            <img class="collection-preview-image" src="${imageUrl}" alt="${collection.name}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                            <span class="collection-preview-badge">${collection.productCount || 0} sản phẩm</span>
+                        </div>
+                        <div class="collection-preview-content">
+                            <h3>${collection.name}</h3>
+                            <p>${collection.description || 'Khám phá bộ sưu tập được tuyển chọn từ các thiết kế nổi bật trong hệ thống.'}</p>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        async function loadHomepageProducts() {
+            const grid = document.getElementById('productsGrid');
+
+            try {
+                const response = await fetch(`${window.CONFIG.API_BASE_URL}/products/featured?limit=4`);
+                const data = await response.json();
+
+                if (!data.success || !Array.isArray(data.data)) {
+                    throw new Error(data.message || 'Không thể tải sản phẩm');
+                }
+
+                renderHomepageProducts(data.data);
+            } catch (error) {
+                console.error('Error loading homepage products:', error);
+                grid.innerHTML = '<div class="products-status">Không thể tải sản phẩm từ database lúc này.</div>';
+            }
+        }
+
+        function resolveProductImage(product) {
+            return window.CONFIG?.resolveProductImage(product, '../../assets/images/football/hero-gear.svg') || '../../assets/images/football/hero-gear.svg';
+        }
+
+        function formatCurrency(value) {
+            return `${Number(value || 0).toLocaleString('vi-VN')} đ`;
+        }
+
+        function getDefaultVariant(product) {
+            if (product?.defaultVariant) {
+                return product.defaultVariant;
+            }
+
+            if (Array.isArray(product?.variants) && product.variants.length) {
+                return product.variants[0];
+            }
+
+            return null;
+        }
+
+        function buildWishlistPayload(product) {
+            const defaultVariant = getDefaultVariant(product);
+            return {
+                productId: product._id,
+                slug: product.slug || product._id,
+                name: product.name,
+                image: resolveProductImage(product),
+                price: Number(defaultVariant?.finalPrice || product.minCurrentPrice || product.currentPrice || product.price || 0),
+                originalPrice: Number(product.minPrice || product.price || product.currentPrice || 0),
+                size: defaultVariant?.size || (Array.isArray(product.sizes) && product.sizes.length ? product.sizes[0] : ''),
+                color: defaultVariant?.color || (Array.isArray(product.colors) && product.colors.length ? product.colors[0] : '')
+            };
+        }
+
+        function resolveCategoryName(product) {
+            if (product.category && typeof product.category === 'object' && product.category.name) {
+                return product.category.name;
+            }
+
+            const matchedCategory = Array.isArray(window.homepageCategories)
+                ? window.homepageCategories.find((category) => String(category._id) === String(product.category || product.categoryId))
+                : null;
+
+            return matchedCategory?.name || 'Không có danh mục';
+        }
+
+        function getProductColorDetails(product) {
+            const rawColors = Array.isArray(product?.colorOptions) && product.colorOptions.length
+                ? product.colorOptions.map((item) => ({ name: item?.name, code: item?.code || '#D9D9D9' }))
+                : Array.isArray(product?.variants)
+                    ? product.variants.map((item) => ({ name: item?.color, code: item?.colorCode || '#D9D9D9' }))
+                    : Array.isArray(product?.colors)
+                        ? product.colors.map((item) => ({ name: item, code: '#D9D9D9' }))
+                        : [];
+
+            return rawColors.filter((item, index, items) => {
+                const colorName = String(item?.name || '').trim();
+                return colorName && items.findIndex((entry) => String(entry?.name || '').trim().toLowerCase() === colorName.toLowerCase()) === index;
+            });
+        }
+
+        function renderHomepageProducts(products) {
+            const grid = document.getElementById('productsGrid');
+
+            if (!products.length) {
+                grid.innerHTML = '<div class="products-status">Hiện chưa có sản phẩm nào trong database để hiển thị.</div>';
+                return;
+            }
+
+            grid.innerHTML = products.map(product => {
+                const imageUrl = resolveProductImage(product);
+                const defaultVariant = getDefaultVariant(product);
+                const currentPrice = Number(product.minCurrentPrice || defaultVariant?.finalPrice || product.currentPrice || product.price || 0);
+                const originalPrice = Number(product.minPrice || defaultVariant?.price || product.price || currentPrice);
+                const showDiscount = originalPrice > currentPrice;
+                const discountText = Number(product.discount || 0) > 0
+                    ? `-${Math.round(Number(product.discount))}%`
+                    : showDiscount
+                        ? `-${Math.round(((originalPrice - currentPrice) / originalPrice) * 100)}%`
+                        : '';
+                const categoryName = resolveCategoryName(product);
+                const colorDetails = getProductColorDetails(product);
+
+                return `
+                    <article class="product-card" role="link" tabindex="0" onclick="openProductDetail('${product.slug || product._id}')" onkeydown="handleHomepageCardKeydown(event, '${product.slug || product._id}')">
+                        <div class="product-card-image">
+                            ${discountText ? `<span class="product-discount-badge">${discountText}</span>` : ''}
+                            <button class="product-wishlist-fab ${window.isProductWishlisted?.(product._id) ? 'active' : ''}" type="button" data-product='${JSON.stringify(buildWishlistPayload(product)).replace(/'/g, '&apos;')}' onclick="event.stopPropagation(); handleHomepageToggleWishlist(this)" aria-label="Yêu thích">
+                                <i class="${window.isProductWishlisted?.(product._id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                            <img src="${imageUrl}" alt="${product.name}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                        </div>
+                        <div class="product-card-body">
+                            <span class="product-card-category">${categoryName}</span>
+                            <h3 class="product-card-title">${product.name}</h3>
+                            <div class="product-card-price-wrap">
+                                <span class="product-card-price-current">${formatCurrency(currentPrice)}</span>
+                                ${showDiscount ? `<span class="product-card-price-original">${formatCurrency(originalPrice)}</span>` : ''}
+                            </div>
+                            <div class="product-card-swatches">
+                                ${colorDetails.slice(0, 4).map((color) => `<span class="product-color-dot" title="${color.name}" style="background:${color.code || '#D9D9D9'}"></span>`).join('')}
+                                ${colorDetails.length > 4 ? `<span class="product-color-more">+${colorDetails.length - 4}</span>` : ''}
+                            </div>
+                            <div class="product-action">
+                                <button class="btn-add-cart" type="button" data-product='${JSON.stringify({
+                                    _id: product._id,
+                                    slug: product.slug,
+                                    name: product.name,
+                                    price: Number(defaultVariant?.finalPrice || currentPrice),
+                                    image: imageUrl,
+                                    size: defaultVariant?.size || (Array.isArray(product.sizes) && product.sizes.length ? product.sizes[0] : ''),
+                                    color: defaultVariant?.color || (Array.isArray(product.colors) && product.colors.length ? product.colors[0] : '')
+                                }).replace(/'/g, '&apos;')}' onclick="event.stopPropagation(); handleHomepageAddToCart(this)">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function addProductToCart(product) {
+            return window.addItemToCart({
+                productId: product._id,
+                slug: product.slug,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                quantity: 1,
+                size: product.size,
+                color: product.color
+            });
+        }
+
+        function handleHomepageAddToCart(button) {
+            const product = JSON.parse(button.dataset.product.replace(/&apos;/g, "'"));
+            const result = addProductToCart(product);
+            if (!result?.ok) {
+                return;
+            }
+
+            const originalText = button.textContent;
+            button.textContent = 'Da them';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1200);
+        }
+
+        function handleHomepageToggleWishlist(button) {
+            const product = JSON.parse(button.dataset.product.replace(/&apos;/g, "'"));
+            const result = window.toggleWishlistItem(product);
+            window.setWishlistButtonState(button, result.active);
+        }
+
+        function handleHomepageCardKeydown(event, identifier) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openProductDetail(identifier);
+            }
+        }
+
+        function openProductDetail(identifier) {
+            window.location.href = `product-detail.html?slug=${encodeURIComponent(identifier)}`;
+        }
+
+        function openCollectionDetail(identifier) {
+            window.location.href = `collection-detail.html?slug=${encodeURIComponent(identifier)}`;
+        }
+
+        window.handleHomepageAddToCart = handleHomepageAddToCart;
+        window.handleHomepageToggleWishlist = handleHomepageToggleWishlist;
+        window.handleHomepageCardKeydown = handleHomepageCardKeydown;
+
+        // ==================== Slider Controls ==================== 
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.dot');
+
+            if (n >= slides.length) {
+                currentSlide = 0;
+            } else if (n < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = n;
+            }
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function restartSlideTimer() {
+            window.clearInterval(slideTimer);
+            slideTimer = window.setInterval(() => showSlide(currentSlide + 1), SLIDE_INTERVAL_MS);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+            restartSlideTimer();
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+            restartSlideTimer();
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+            restartSlideTimer();
+        }
+
+        restartSlideTimer();
+
+    </script>
+</body>
+</html>

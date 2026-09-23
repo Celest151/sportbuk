@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Người Dùng - SPORTBUK Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #DC3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --danger: #dc3545;
+            --dark: #2C3E50;
+            --light: #F8F7F4;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--dark);
+        }
+
+        .admin-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--dark);
+            color: white;
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 30px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-left-color: var(--primary);
+        }
+
+        .main-content {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #ff6b6b);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            margin: 0 3px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .action-btn.edit {
+            background: var(--info);
+            color: white;
+        }
+
+        .action-btn.delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                z-index: 100;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">SPORTBUK</div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Sản Phẩm</a></li>
+                <li><a href="categories.html"><i class="fas fa-tags"></i> Danh Mục</a></li>
+                <li><a href="collections.html"><i class="fas fa-layer-group"></i> Collection</a></li>
+                <li><a href="sizes.html"><i class="fas fa-ruler-combined"></i> Bảng Size</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Đơn Hàng</a></li>
+                <li><a href="users.html" class="active"><i class="fas fa-users"></i> Người Dùng</a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-bar"></i> Thống Kê</a></li>
+                <li><a href="chats.html"><i class="fas fa-comments"></i> Chat</a></li>
+                <li><hr style="margin: 20px 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);"></li>
+                <li><a href="../customer/index.html"><i class="fas fa-arrow-left"></i> Về Trang Chủ</a></li>
+                <li><a href="javascript:logout();"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Quản Lý Người Dùng</h1>
+            </div>
+
+            <div class="table-section">
+                <div class="filters">
+                    <input type="text" placeholder="Tìm theo tên, email...">
+                    <select>
+                        <option>Tất cả vai trò</option>
+                        <option>Khách Hàng</option>
+                        <option>Admin</option>
+                    </select>
+                    <select>
+                        <option>Tất cả trạng thái</option>
+                        <option>Hoạt Động</option>
+                        <option>Khóa</option>
+                    </select>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Người Dùng</th>
+                            <th>Email</th>
+                            <th>Điện Thoại</th>
+                            <th>Vai Trò</th>
+                            <th>Trạng Thái</th>
+                            <th>Ngày Tạo</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="7" style="text-align: center; padding: 20px;">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api/v1';
+
+        // Load users from API
+        async function loadUsers() {
+            try {
+                const token = localStorage.getItem('sportbuk_auth_token') || localStorage.getItem('authToken');
+                const response = await fetch(`${API_BASE_URL}/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    renderUsers(data.data);
+                } else {
+                    document.getElementById('usersTableBody').innerHTML = 
+                        '<tr><td colspan="7" style="text-align: center;">Không có người dùng</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('usersTableBody').innerHTML = 
+                    '<tr><td colspan="7" style="text-align: center; color: red;">Lỗi tải dữ liệu</td></tr>';
+            }
+        }
+
+        // Render users to table
+        function renderUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Không có người dùng</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = users.map(user => {
+                const initials = (user.fullName || user.email || 'U')
+                    .split(' ')
+                    .map(n => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
+                
+                const statusBadge = user.isActive ? 'badge-success' : 'badge-danger';
+                const statusText = user.isActive ? 'Hoạt Động' : 'Khóa';
+                
+                return `
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="user-avatar">${initials}</div>
+                                ${user.fullName || 'N/A'}
+                            </div>
+                        </td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>${user.role === 'admin' ? 'Admin' : 'Khách Hàng'}</td>
+                        <td><span class="status-badge ${statusBadge}">${statusText}</span></td>
+                        <td>${new Date(user.createdAt).toLocaleDateString('vi-VN')}</td>
+                        <td>
+                            <button class="action-btn edit" onclick="editUser('${user._id}')">Sửa</button>
+                            <button class="action-btn delete" onclick="deleteUser('${user._id}')">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function editUser(id) {
+            alert(`Chỉnh sửa người dùng #${id}`);
+        }
+
+        function deleteUser(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
+                alert(`Đã xóa người dùng #${id}`);
+            }
+        }
+
+        function logout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                clearAuthState();
+                window.location.replace('../../pages/auth/login.html');
+            }
+        }
+
+        function clearAuthState() {
+            localStorage.removeItem('sportbuk_auth_token');
+            localStorage.removeItem('sportbuk_refresh_token');
+            localStorage.removeItem('sportbuk_user_info');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+        }
+
+        function validateAdminAccess(showUnauthorizedMessage = true) {
+            const userInfo = localStorage.getItem('sportbuk_user_info') || localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('sportbuk_auth_token') || localStorage.getItem('authToken');
+
+            if (!userInfo || !authToken) {
+                window.location.replace('../../pages/auth/login.html');
+                return false;
+            }
+
+            try {
+                const user = JSON.parse(userInfo);
+                if (user.role !== 'admin') {
+                    if (showUnauthorizedMessage) {
+                        alert('Bạn không có quyền truy cập trang này!');
+                    }
+                    window.location.replace('../../pages/customer/index.html');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error parsing user info:', error);
+                clearAuthState();
+                window.location.replace('../../pages/auth/login.html');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Auth check - prevent infinite redirect loop
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!validateAdminAccess()) {
+                return;
+            }
+
+            // Load users
+            loadUsers();
+        });
+
+        window.addEventListener('pageshow', function() {
+            validateAdminAccess(false);
+        });
+    </script>
+</body>
+</html>

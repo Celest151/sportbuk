@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - SPORTBUK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <link rel="stylesheet" href="../../css/customer/product-detail-page.css">
+    <link rel="stylesheet" href="../../css/customer/sport-theme.css">
+</head>
+<body>
+    <!-- ==================== HEADER COMPONENT ==================== -->
+    <div id="header"></div>
+
+    <!-- ==================== BREADCRUMB ==================== -->
+    <div class="breadcrumb">
+        <a href="index.html">Trang chủ</a> / 
+        <a href="product-list.html">Sản phẩm</a> / 
+        <span id="breadcrumb-name">Chi tiết sản phẩm</span>
+    </div>
+
+    <!-- ==================== PRODUCT DETAIL ==================== -->
+    <div class="product-detail-container">
+        <div class="detail-wrapper">
+            <!-- Image Gallery -->
+            <div class="product-images">
+                <div class="main-image">
+                    <img id="mainImage" src="" alt="Product Image" style="background: #f5f5f5;">
+                    <span class="badge-sale" id="saleBadge" style="display: none;"></span>
+                </div>
+                <div class="thumbnails" id="thumbnailsContainer">
+                    <!-- Thumbnails will be loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <div class="product-header">
+                    <h1 id="productTitle">Đang tải...</h1>
+                    <div class="rating-section">
+                        <div class="stars"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i></div>
+                        <span id="ratingCount">(0 đánh giá)</span>
+                        <span id="soldCount">0 đã bán</span>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price-box">
+                        <span class="current-price" id="currentPrice">0 đ</span>
+                        <span class="original-price" id="originalPrice">1.290.000 đ</span>
+                        <span class="discount-percent" id="discountPercent">-30%</span>
+                    </div>
+                </div>
+
+                <div class="product-options">
+                    <div class="option-group" id="colorOptionGroup">
+                        <label>Màu Sắc</label>
+                        <div class="color-selection-header">
+                            <span class="selected-color-label" id="selectedColorLabel">Đang cập nhật</span>
+                        </div>
+                        <div class="color-selector" id="colorSelector"></div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>Kích Cỡ</label>
+                        <div class="size-selector" id="sizeSelector">
+                            <button class="size-option active" type="button">M</button>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>Số Lượng</label>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="decreaseQty">−</button>
+                            <input type="number" id="quantityInput" value="1" min="1" readonly>
+                            <button class="qty-btn" id="increaseQty">+</button>
+                            <span class="stock-info" id="stockInfo">Còn 0 sản phẩm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    <button class="btn btn-primary" id="addToCartBtn">
+                        <i class="fas fa-shopping-cart"></i> Thêm vào giỏ
+                    </button>
+                    <button class="btn btn-danger" id="buyNowBtn">
+                        <i class="fas fa-shopping-bag"></i> Xem giỏ hàng
+                    </button>
+                    <button class="btn btn-outline" id="wishlistBtn">
+                        <i class="far fa-heart"></i> Yêu thích
+                    </button>
+                </div>
+
+                <div class="product-benefits">
+                    <div class="benefit">
+                        <i class="fas fa-truck"></i>
+                        <div>
+                            <h4>Thiết kế hiệu suất</h4>
+                            <p>Vật liệu dành cho vận động</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-undo"></i>
+                        <div>
+                            <h4>Fit linh hoạt</h4>
+                            <p>Nhiều kích cỡ và biến thể</p>
+                        </div>
+                    </div>
+                    <div class="benefit">
+                        <i class="fas fa-dumbbell"></i>
+                        <div>
+                            <h4>Ready to train</h4>
+                            <p>Kiểm tra tồn kho trực tiếp</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="product-tabs">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="description">Mô Tả</button>
+                <button class="tab-btn" data-tab="size-chart">Bảng Kích Thước</button>
+                <button class="tab-btn" data-tab="reviews">Đánh Giá</button>
+            </div>
+
+            <div class="tabs-content">
+                <div class="tab-content active" id="description">
+                    <h3>Mô Tả Sản Phẩm</h3>
+                    <div id="descriptionContent">
+                        <p>Đang tải mô tả sản phẩm...</p>
+                    </div>
+                    <p style="margin-top: 15px;">Đặc điểm sản phẩm:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;" id="descriptionHighlights">
+                        <li>Đang cập nhật thông tin sản phẩm.</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="size-chart">
+                    <h3>Bảng Kích Thước</h3>
+                    <div class="size-guide-header">
+                        <p class="size-guide-note" id="sizeGuideNote">Đang tải bảng kích thước...</p>
+                    </div>
+                    <div class="size-chart-table-wrapper">
+                        <table class="size-chart-table">
+                            <thead>
+                                <tr>
+                                    <th>Size Chữ</th>
+                                    <th>Size Số (US)</th>
+                                    <th>Size Số (EU)</th>
+                                    <th>Chiều cao (cm)</th>
+                                    <th>Cân nặng (kg)</th>
+                                    <th>Ngực (cm)</th>
+                                    <th>Eo (cm)</th>
+                                    <th>Hông (cm)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sizeChartBody">
+                                <tr>
+                                    <td colspan="8">Đang tải bảng kích thước...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="reviews">
+                    <h3>Đánh Giá Từ Khách Hàng</h3>
+                    <div class="reviews-section" id="reviewsList">
+                        <div class="review-empty">Đang tải đánh giá...</div>
+                    </div>
+
+                    <div class="review-form is-locked" id="reviewFormWrapper">
+                        <h4>Viết đánh giá của bạn</h4>
+                        <p class="review-permission-message" id="reviewPermissionMessage">Bạn chỉ có thể đánh giá sau khi đã mua và thanh toán thành công sản phẩm này.</p>
+                        <form id="submitReviewForm">
+                            <div class="form-group">
+                                <label>Đánh Giá</label>
+                                <div class="star-rating" id="starRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Bình Luận</label>
+                                <textarea id="reviewText" placeholder="Chia sẻ trải nghiệm của bạn..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="reviewImages">Hình Ảnh Thực Tế</label>
+                                <input type="file" id="reviewImages" accept="image/*" multiple>
+                                <p class="review-image-hint">Bạn có thể tải tối đa 5 ảnh, mỗi ảnh tối đa 5MB.</p>
+                                <div class="review-image-preview" id="reviewImagePreview"></div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gửi Đánh Giá</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <section class="related-products">
+            <h2>Sản Phẩm Liên Quan</h2>
+            <div class="grid" id="relatedProductsGrid">
+                <div class="product-card-small">
+                    <div class="product-image">
+                        <img src="../../assets/images/football/hero-gear.svg" alt="Product">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Đang tải sản phẩm liên quan...</h3>
+                        <div class="product-price">0 đ</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ==================== FOOTER COMPONENT ==================== -->
+    <div id="footer"></div>
+
+    <div class="image-lightbox" id="imageLightbox">
+        <button class="lightbox-close" id="closeLightbox" type="button"><i class="fas fa-times"></i></button>
+        <img id="lightboxImage" src="" alt="Ảnh sản phẩm phóng to">
+    </div>
+
+    <script src="../../js/common/config.js"></script>
+    <script src="../../js/common/api.js"></script>
+    <script src="../../js/components/load-components.js"></script>
+    <script src="../../js/shared.js"></script>
+    <script>
+        let currentProduct = null;
+        let selectedSize = '';
+        let selectedColor = '';
+        let selectedRating = 0;
+        let selectedReviewImages = [];
+        let hasRatedCurrentProduct = false;
+
+        function getUrlParameter(param) {
+            return new URLSearchParams(window.location.search).get(param);
+        }
+
+        function normalizeColorName(value) {
+            return String(value || '').trim();
+        }
+
+        function getUniqueColorOptions(rawOptions = []) {
+            const unique = [];
+
+            rawOptions.filter((item) => String(item?.name || '').trim()).forEach((item) => {
+                const normalizedName = normalizeColorName(item.name);
+                if (!normalizedName) {
+                    return;
+                }
+
+                if (!unique.some((entry) => normalizeColorName(entry.name) === normalizedName)) {
+                    unique.push({
+                        name: normalizedName,
+                        code: item.code || '#D9D9D9'
+                    });
+                }
+            });
+
+            return unique;
+        }
+
+        function getProductImages(product) {
+            return window.CONFIG?.resolveProductImages(product, '../../assets/images/football/hero-gear.svg') || ['../../assets/images/football/hero-gear.svg'];
+        }
+
+        function getImageUrl(value) {
+            return window.CONFIG?.resolveMediaUrl(value, '../../assets/images/football/hero-gear.svg') || '../../assets/images/football/hero-gear.svg';
+        }
+
+        function getNormalizedImages(product) {
+            if (!Array.isArray(product?.images) || !product.images.length) {
+                return (product?.image ? [{ url: product.image, color: null, isPrimary: true }] : []).filter(Boolean);
+            }
+
+            return product.images.map((item, index) => {
+                if (typeof item === 'string') {
+                    return { url: item, color: null, isPrimary: index === 0 };
+                }
+
+                return {
+                    url: item.url,
+                    color: item.color ? normalizeColorName(item.color) : null,
+                    alt: item.alt || '',
+                    isPrimary: Boolean(item.isPrimary) || index === 0
+                };
+            }).filter((item) => item.url);
+        }
+
+        function getColorOptions(product) {
+            const explicitColorOptions = getUniqueColorOptions(
+                Array.isArray(product?.colorOptions)
+                    ? product.colorOptions.map((item) => ({ name: item?.name, code: item?.code }))
+                    : []
+            );
+            if (explicitColorOptions.length) {
+                return explicitColorOptions;
+            }
+
+            const variantColorOptions = getUniqueColorOptions(
+                Array.isArray(product?.variants)
+                    ? product.variants.map((item) => ({ name: item?.color, code: item?.colorCode || '#D9D9D9' }))
+                    : []
+            );
+            if (variantColorOptions.length) {
+                return variantColorOptions;
+            }
+
+            return getUniqueColorOptions(
+                Array.isArray(product?.colors)
+                    ? product.colors.map((item) => ({ name: item, code: '#D9D9D9' }))
+                    : []
+            );
+        }
+
+        function getProductVariants(product) {
+            if (Array.isArray(product?.variants) && product.variants.length) {
+                return product.variants.map((variant) => ({
+                    ...variant,
+                    color: normalizeColorName(variant.color),
+                    finalPrice: Number(variant.finalPrice ?? variant.price ?? 0)
+                }));
+            }
+
+            return [];
+        }
+
+        function getMatchingVariant(product, color, size) {
+            const variants = getProductVariants(product);
+            if (!variants.length) {
+                return null;
+            }
+
+            const normalizedColor = normalizeColorName(color);
+
+            return variants.find((variant) => variant.size === size && normalizedColor && normalizeColorName(variant.color) === normalizedColor)
+                || (normalizedColor ? variants.find((variant) => normalizeColorName(variant.color) === normalizedColor) : null)
+                || (size ? variants.find((variant) => variant.size === size) : null)
+                || variants[0]
+                || null;
+        }
+
+        function buildWishlistPayloadFromCurrent() {
+            const variant = currentProduct ? getMatchingVariant(currentProduct, selectedColor, selectedSize) : null;
+            return {
+                productId: currentProduct?._id,
+                slug: currentProduct?.slug || currentProduct?._id,
+                name: currentProduct?.name,
+                image: getImagesForColor(currentProduct, selectedColor)[0] || getProductImages(currentProduct)[0],
+                price: Number(variant?.finalPrice ?? currentProduct?.currentPrice ?? currentProduct?.price ?? 0),
+                originalPrice: Number(variant?.price ?? currentProduct?.minPrice ?? currentProduct?.price ?? 0),
+                size: selectedSize || '',
+                color: selectedColor || ''
+            };
+        }
+
+        function buildWishlistPayload(product) {
+            const variant = getMatchingVariant(product, product?.defaultVariant?.color, product?.defaultVariant?.size);
+            return {
+                productId: product?._id,
+                slug: product?.slug || product?._id,
+                name: product?.name,
+                image: getImagesForColor(product, variant?.color || product?.defaultVariant?.color || product?.colors?.[0])[0] || getProductImages(product)[0],
+                price: Number(variant?.finalPrice ?? product?.minCurrentPrice ?? product?.currentPrice ?? product?.price ?? 0),
+                originalPrice: Number(variant?.price ?? product?.minPrice ?? product?.price ?? 0),
+                size: variant?.size || product?.defaultVariant?.size || (Array.isArray(product?.sizes) && product.sizes.length ? product.sizes[0] : ''),
+                color: variant?.color || product?.defaultVariant?.color || getColorOptions(product)[0]?.name || ''
+            };
+        }
+
+        function refreshWishlistButton() {
+            const wishlistButton = document.getElementById('wishlistBtn');
+            if (!wishlistButton || !currentProduct) {
+                return;
+            }
+
+            window.setWishlistButtonState(wishlistButton, window.isProductWishlisted(currentProduct._id), { textMode: true });
+        }
+
+        function getAvailableSizesForColor(product, color) {
+            const normalizedColor = normalizeColorName(color);
+            const sizes = getProductVariants(product)
+                .filter((variant) => !normalizedColor || normalizeColorName(variant.color) === normalizedColor)
+                .map((variant) => variant.size)
+                .filter(Boolean);
+
+            return sizes.length ? sizes : (Array.isArray(product?.sizes) ? product.sizes.filter(Boolean) : []);
+        }
+
+        function getImagesForColor(product, color) {
+            const images = getNormalizedImages(product);
+            if (!images.length) {
+                return getProductImages(product);
+            }
+
+            const normalizedColor = normalizeColorName(color);
+            if (!normalizedColor) {
+                return images.map((item) => getImageUrl(item.url)).filter(Boolean);
+            }
+
+            const matching = images.filter((item) => normalizeColorName(item.color) === normalizedColor);
+            const shared = images.filter((item) => !item.color);
+            const displayImages = matching.length ? [...matching, ...shared] : images;
+
+            return displayImages.map((item) => getImageUrl(item.url)).filter(Boolean);
+        }
+
+        function formatCurrency(value) {
+            return `${Number(value || 0).toLocaleString('vi-VN')} đ`;
+        }
+
+        function renderStars(rating) {
+            const rounded = Math.round(Number(rating || 0));
+            return Array.from({ length: 5 }, (_, index) => index < rounded ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>').join(' ');
+        }
+
+        function renderImageGallery(images) {
+            const mainImage = document.getElementById('mainImage');
+            const container = document.getElementById('thumbnailsContainer');
+            mainImage.src = images[0] || '../../assets/images/football/hero-gear.svg';
+            mainImage.dataset.zoomSrc = images[0] || '../../assets/images/football/hero-gear.svg';
+            mainImage.onerror = function() {
+                this.onerror = null;
+                this.src = '../../assets/images/football/hero-gear.svg';
+                this.dataset.zoomSrc = '../../assets/images/football/hero-gear.svg';
+            };
+
+            container.innerHTML = images.map((image, index) => `
+                <button class="thumbnail ${index === 0 ? 'active' : ''}" type="button" data-image="${image}">
+                    <img src="${image}" alt="Thumbnail ${index + 1}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                </button>
+            `).join('');
+
+            container.querySelectorAll('.thumbnail').forEach((thumbnail) => {
+                thumbnail.addEventListener('click', function() {
+                    mainImage.src = this.dataset.image;
+                    mainImage.dataset.zoomSrc = this.dataset.image;
+                    container.querySelectorAll('.thumbnail').forEach((item) => item.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function openImageLightbox(imageUrl) {
+            const lightbox = document.getElementById('imageLightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = imageUrl || document.getElementById('mainImage').src;
+            lightboxImage.onerror = function() {
+                this.onerror = null;
+                this.src = '../../assets/images/football/hero-gear.svg';
+            };
+            lightbox.classList.add('active');
+        }
+
+        function closeImageLightbox() {
+            document.getElementById('imageLightbox').classList.remove('active');
+        }
+
+        function escapeHtml(value) {
+            return String(value || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatReviewDate(value) {
+            if (!value) {
+                return 'Vừa xong';
+            }
+
+            return new Date(value).toLocaleDateString('vi-VN');
+        }
+
+        function getReviewInitials(fullName) {
+            const parts = String(fullName || 'Khách hàng').trim().split(/\s+/).filter(Boolean);
+            return parts.slice(0, 2).map((item) => item.charAt(0).toUpperCase()).join('') || 'KH';
+        }
+
+        function getReviewAvatarUrl(comment) {
+            return window.CONFIG?.resolveMediaUrl(comment?.user?.avatar, '') || '';
+        }
+
+        function getCurrentReviewUserId() {
+            const user = window.getStoredUser?.();
+            return String(user?._id || user?.id || '');
+        }
+
+        function isAdminReviewUser() {
+            const user = window.getStoredUser?.();
+            return String(user?.role || '').toLowerCase() === 'admin';
+        }
+
+        function getAdminReplyAvatarUrl(reply) {
+            return window.CONFIG?.resolveMediaUrl(reply?.adminAvatar, '') || '';
+        }
+
+        function canDeleteComment(comment) {
+            return Boolean(comment?._id && getCurrentReviewUserId() && String(comment?.user?._id || comment?.user?.id || '') === getCurrentReviewUserId());
+        }
+
+        function renderAdminReply(reply) {
+            if (!reply?.content) {
+                return '';
+            }
+
+            const avatarUrl = getAdminReplyAvatarUrl(reply);
+            const adminName = escapeHtml(reply.adminName || 'SPORTBUK Admin');
+            return `
+                <div class="review-admin-reply">
+                    <div class="review-admin-reply-avatar ${avatarUrl ? 'has-image' : ''}">
+                        ${avatarUrl
+                            ? `<img src="${avatarUrl}" alt="${adminName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                            : ''}
+                        <span class="review-admin-reply-fallback" style="display:${avatarUrl ? 'none' : 'flex'};">AD</span>
+                    </div>
+                    <div class="review-admin-reply-body">
+                        <div class="review-admin-reply-meta">
+                            <span class="review-admin-reply-author">${adminName}</span>
+                            <span class="review-admin-reply-date">${escapeHtml(formatReviewDate(reply.updatedAt || reply.createdAt))}</span>
+                        </div>
+                        <div class="review-admin-reply-text">${escapeHtml(reply.content)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminReplyEditor(comment) {
+            if (!isAdminReviewUser() || !comment?._id) {
+                return '';
+            }
+
+            return `
+                <form class="admin-reply-form" data-comment-id="${escapeHtml(comment._id)}">
+                    <label class="admin-reply-label" for="adminReply-${escapeHtml(comment._id)}">Phản hồi với tư cách admin</label>
+                    <textarea id="adminReply-${escapeHtml(comment._id)}" class="admin-reply-textarea" name="content" placeholder="Nhập phản hồi cho đánh giá này...">${escapeHtml(comment.adminReply?.content || '')}</textarea>
+                    <div class="admin-reply-actions">
+                        <button type="submit" class="review-reply-submit-btn">${comment.adminReply?.content ? 'Cập nhật phản hồi' : 'Gửi phản hồi'}</button>
+                        ${comment.adminReply?.content ? `<button type="button" class="review-reply-delete-btn" data-comment-id="${escapeHtml(comment._id)}">Xóa phản hồi</button>` : ''}
+                    </div>
+                </form>
+            `;
+        }
+
+        function renderColorOptions(product) {
+            const container = document.getElementById('colorSelector');
+            const label = document.getElementById('selectedColorLabel');
+            const colorOptions = getColorOptions(product);
+
+            if (!colorOptions.length) {
+                selectedColor = '';
+                label.textContent = '';
+                container.innerHTML = '';
+                return;
+            }
+
+            if (!selectedColor || !colorOptions.some((option) => normalizeColorName(option.name) === normalizeColorName(selectedColor))) {
+                selectedColor = colorOptions[0]?.name || '';
+            }
+
+            label.textContent = selectedColor;
+            container.innerHTML = colorOptions.map((option) => `
+                <button class="color-option ${normalizeColorName(option.name) === normalizeColorName(selectedColor) ? 'active' : ''}" type="button" data-color="${escapeHtml(option.name)}">
+                    <span class="color-swatch" style="background:${escapeHtml(option.code || '#D9D9D9')}"></span>
+                    <span class="color-name">${escapeHtml(option.name)}</span>
+                </button>
+            `).join('');
+
+            container.querySelectorAll('.color-option').forEach((button) => {
+                button.addEventListener('click', function() {
+                    selectedColor = this.dataset.color;
+                    const availableSizes = getAvailableSizesForColor(product, selectedColor);
+                    if (!availableSizes.includes(selectedSize)) {
+                        selectedSize = availableSizes[0] || '';
+                    }
+                    syncSelectedVariant(product);
+                });
+            });
+        }
+
+        function renderSizeOptions(product) {
+            const container = document.getElementById('sizeSelector');
+            const availableSizes = getAvailableSizesForColor(product, selectedColor);
+            const allSizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : availableSizes;
+
+            if (!allSizes.length) {
+                selectedSize = '';
+                container.innerHTML = '';
+                return;
+            }
+
+            if (!availableSizes.includes(selectedSize)) {
+                selectedSize = availableSizes[0] || allSizes[0] || '';
+            }
+
+            container.innerHTML = allSizes.map((value) => {
+                const isAvailable = availableSizes.includes(value);
+                const isActive = value === selectedSize;
+                return `<button class="size-option ${isActive ? 'active' : ''} ${isAvailable ? '' : 'is-disabled'}" type="button" data-value="${value}" ${isAvailable ? '' : 'disabled'}>${value}</button>`;
+            }).join('');
+
+            container.querySelectorAll('.size-option').forEach((button) => {
+                button.addEventListener('click', function() {
+                    if (this.disabled) {
+                        return;
+                    }
+
+                    selectedSize = this.dataset.value;
+                    syncSelectedVariant(product);
+                });
+            });
+        }
+
+        function updatePriceAndStock(product, variant) {
+            const variantPrice = Number(variant?.price ?? product.minPrice ?? product.price ?? 0);
+            const currentVariantPrice = Number(variant?.finalPrice ?? (variantPrice * (1 - Number(product.discount || 0) / 100)));
+            const currentPriceElement = document.getElementById('currentPrice');
+            const originalPriceElement = document.getElementById('originalPrice');
+            const discountElement = document.getElementById('discountPercent');
+            const saleBadge = document.getElementById('saleBadge');
+            const stock = Number(variant?.stock ?? product.stock ?? 0);
+            const discount = Number(product.discount || 0);
+
+            currentPriceElement.textContent = formatCurrency(currentVariantPrice);
+
+            if (discount > 0 && variantPrice > currentVariantPrice) {
+                originalPriceElement.textContent = formatCurrency(variantPrice);
+                originalPriceElement.style.display = 'inline';
+                discountElement.textContent = `-${discount}%`;
+                discountElement.style.display = 'inline-flex';
+                saleBadge.textContent = `-${discount}%`;
+                saleBadge.style.display = 'inline-flex';
+            } else {
+                originalPriceElement.style.display = 'none';
+                discountElement.style.display = 'none';
+                saleBadge.style.display = 'none';
+            }
+
+            document.getElementById('stockInfo').textContent = `Còn ${stock} sản phẩm`;
+
+            const quantityInput = document.getElementById('quantityInput');
+            const currentQuantity = Number(quantityInput.value || 1);
+            quantityInput.value = Math.max(1, Math.min(currentQuantity, Math.max(stock, 1)));
+
+            document.getElementById('addToCartBtn').disabled = stock <= 0;
+            document.getElementById('buyNowBtn').disabled = stock <= 0;
+        }
+
+        function syncSelectedVariant(product) {
+            const variant = getMatchingVariant(product, selectedColor, selectedSize);
+            if (!variant) {
+                return;
+            }
+
+            selectedColor = normalizeColorName(variant.color || selectedColor);
+            selectedSize = variant.size || selectedSize || '';
+
+            renderColorOptions(product);
+            renderSizeOptions(product);
+            updatePriceAndStock(product, variant);
+            renderImageGallery(getImagesForColor(product, selectedColor));
+            refreshWishlistButton();
+        }
+
+        function renderSizeChart(rows, availableSizes, note) {
+            const sizeChartBody = document.getElementById('sizeChartBody');
+            const normalizedAvailableSizes = Array.isArray(availableSizes) ? availableSizes : [];
+
+            document.getElementById('sizeGuideNote').textContent = note || 'Bảng kích thước tham khảo, số đo có thể chênh lệch 1-2 cm tùy chất liệu.';
+
+            if (!Array.isArray(rows) || rows.length === 0) {
+                sizeChartBody.innerHTML = '<tr><td colspan="8">Chưa có dữ liệu bảng kích thước.</td></tr>';
+                return;
+            }
+
+            sizeChartBody.innerHTML = rows.map((row) => {
+                const isAvailable = normalizedAvailableSizes.includes(row.name);
+                return `
+                    <tr class="${isAvailable ? 'is-available' : ''}">
+                        <td>${escapeHtml(row.name)}</td>
+                        <td>${escapeHtml(row.usSize || '-')}</td>
+                        <td>${escapeHtml(row.euSize || '-')}</td>
+                        <td>${escapeHtml(row.height || '-')}</td>
+                        <td>${escapeHtml(row.weight || '-')}</td>
+                        <td>${escapeHtml(row.chest || '-')}</td>
+                        <td>${escapeHtml(row.waist || '-')}</td>
+                        <td>${escapeHtml(row.hip || '-')}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderDescription(product) {
+            document.getElementById('descriptionContent').innerHTML = `<p>${product.description || 'Sản phẩm hiện chưa có mô tả chi tiết.'}</p>`;
+
+            const highlights = [
+                `Danh mục: ${product.categoryName || 'Đang cập nhật'}`,
+                `Giá hiện tại: ${formatCurrency(product.minCurrentPrice || product.currentPrice || product.price || 0)}`,
+                `Kích cỡ có sẵn: ${(product.sizes || []).join(', ') || 'Chưa cập nhật'}`,
+                `Màu sắc: ${getColorOptions(product).map((item) => item.name).join(', ') || 'Chưa cập nhật'}`,
+                `Số lượng tồn: ${product.stock || 0}`
+            ];
+
+            document.getElementById('descriptionHighlights').innerHTML = highlights.map((item) => `<li>${item}</li>`).join('');
+        }
+
+        function updateReviewSummary(comments = []) {
+            const average = comments.length
+                ? comments.reduce((total, comment) => total + Number(comment.rating || 0), 0) / comments.length
+                : Number(currentProduct?.rating || currentProduct?.ratingAverage || 0);
+
+            document.getElementById('ratingCount').textContent = `(${comments.length} đánh giá)`;
+            document.querySelector('.rating-section .stars').innerHTML = renderStars(average);
+        }
+
+        function renderComments(comments) {
+            const container = document.getElementById('reviewsList');
+
+            if (!Array.isArray(comments) || comments.length === 0) {
+                container.innerHTML = '<div class="review-empty">Chưa có đánh giá nào cho sản phẩm này.</div>';
+                updateReviewSummary([]);
+                return;
+            }
+
+            container.innerHTML = comments.map((comment) => `
+                <article class="review-item">
+                    <div class="review-avatar ${getReviewAvatarUrl(comment) ? 'has-image' : ''}">
+                        ${getReviewAvatarUrl(comment)
+                            ? `<img src="${getReviewAvatarUrl(comment)}" alt="${escapeHtml(comment.user?.fullName || comment.user?.fullname || 'Khách hàng')}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                            : ''}
+                        <span class="review-avatar-fallback" style="display:${getReviewAvatarUrl(comment) ? 'none' : 'flex'};">${escapeHtml(getReviewInitials(comment.user?.fullName || comment.user?.fullname))}</span>
+                    </div>
+                    <div class="review-content">
+                        <div class="review-header">
+                            <div class="review-meta">
+                                <span class="review-author">${escapeHtml(comment.user?.fullName || comment.user?.fullname || 'Khách hàng')}</span>
+                                <span class="review-date">${escapeHtml(formatReviewDate(comment.createdAt))}</span>
+                            </div>
+                            ${canDeleteComment(comment) ? `<button type="button" class="review-delete-btn" data-comment-id="${escapeHtml(comment._id)}">Xóa</button>` : ''}
+                        </div>
+                        ${Number(comment.rating || 0) > 0 ? `<div class="review-rating">${renderStars(comment.rating || 0)}</div>` : '<div class="review-rating review-rating-note">Bình luận bổ sung sau khi đã đánh giá sao</div>'}
+                        ${comment.title ? `<div class="review-title">${escapeHtml(comment.title)}</div>` : ''}
+                        <div class="review-text">${escapeHtml(comment.content)}</div>
+                        ${renderCommentImages(comment.images || [])}
+                        ${renderAdminReply(comment.adminReply)}
+                        ${renderAdminReplyEditor(comment)}
+                    </div>
+                </article>
+            `).join('');
+
+            updateReviewSummary(comments);
+        }
+
+        function setReviewFormLockedState(locked, message) {
+            const wrapper = document.getElementById('reviewFormWrapper');
+            const permissionMessage = document.getElementById('reviewPermissionMessage');
+            const textarea = document.getElementById('reviewText');
+            const submitButton = document.querySelector('#submitReviewForm button[type="submit"]');
+            const stars = document.querySelectorAll('#starRating i');
+            const imageInput = document.getElementById('reviewImages');
+
+            wrapper.classList.toggle('is-locked', locked);
+            permissionMessage.textContent = message || '';
+            permissionMessage.style.display = message ? 'block' : 'none';
+            textarea.disabled = locked;
+            submitButton.disabled = locked;
+            imageInput.disabled = locked;
+            stars.forEach((star) => {
+                star.classList.toggle('is-disabled', locked);
+            });
+        }
+
+        function syncReviewRatingState() {
+            const stars = document.querySelectorAll('#starRating i');
+            stars.forEach((star) => {
+                star.classList.toggle('is-disabled', hasRatedCurrentProduct || document.getElementById('reviewFormWrapper').classList.contains('is-locked'));
+            });
+
+            if (hasRatedCurrentProduct) {
+                selectedRating = 0;
+                stars.forEach((star) => {
+                    star.classList.remove('fas', 'active');
+                    star.classList.add('far');
+                });
+            }
+        }
+
+        function renderCommentImages(images = []) {
+            const imageUrls = (Array.isArray(images) ? images : [])
+                .map((item) => window.CONFIG.resolveMediaUrl(item, ''))
+                .filter(Boolean);
+
+            if (!imageUrls.length) {
+                return '';
+            }
+
+            return `
+                <div class="review-images">
+                    ${imageUrls.map((imageUrl, index) => `
+                        <button type="button" class="review-image-thumb" data-review-image="${escapeHtml(imageUrl)}" aria-label="Xem ảnh đánh giá ${index + 1}">
+                            <img src="${imageUrl}" alt="Ảnh đánh giá ${index + 1}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderReviewImagePreview() {
+            const preview = document.getElementById('reviewImagePreview');
+
+            if (!selectedReviewImages.length) {
+                preview.innerHTML = '';
+                return;
+            }
+
+            preview.innerHTML = selectedReviewImages.map((file, index) => `
+                <div class="review-preview-card">
+                    <img src="${URL.createObjectURL(file)}" alt="Ảnh xem trước ${index + 1}">
+                    <button type="button" class="review-preview-remove" data-index="${index}" aria-label="Xóa ảnh xem trước ${index + 1}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function syncReviewImageInput() {
+            const input = document.getElementById('reviewImages');
+            const dataTransfer = new DataTransfer();
+            selectedReviewImages.forEach((file) => dataTransfer.items.add(file));
+            input.files = dataTransfer.files;
+        }
+
+        function resetReviewImageSelection() {
+            selectedReviewImages = [];
+            document.getElementById('reviewImages').value = '';
+            renderReviewImagePreview();
+        }
+
+        function handleReviewImageSelection(event) {
+            const files = Array.from(event.target.files || []);
+            const imageFiles = files.filter((file) => /^image\//i.test(file.type));
+
+            if (imageFiles.length !== files.length) {
+                alert('Chỉ được chọn tệp hình ảnh.');
+            }
+
+            const nextImages = [...selectedReviewImages, ...imageFiles].slice(0, 5);
+            if (selectedReviewImages.length + imageFiles.length > 5) {
+                alert('Bạn chỉ có thể tải tối đa 5 ảnh cho mỗi đánh giá.');
+            }
+
+            selectedReviewImages = nextImages;
+            syncReviewImageInput();
+            renderReviewImagePreview();
+        }
+
+        function handleReviewImagePreviewClick(event) {
+            const removeButton = event.target.closest('.review-preview-remove');
+            if (!removeButton) {
+                return;
+            }
+
+            const index = Number(removeButton.dataset.index);
+            if (Number.isNaN(index)) {
+                return;
+            }
+
+            selectedReviewImages.splice(index, 1);
+            syncReviewImageInput();
+            renderReviewImagePreview();
+        }
+
+        async function handleCommentDelete(commentId) {
+            if (!commentId || !currentProduct) {
+                return;
+            }
+
+            const confirmed = window.confirm('Bạn có chắc muốn xóa đánh giá này không?');
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                await window.CommentAPI.deleteComment(commentId);
+                await Promise.all([
+                    loadComments(currentProduct._id),
+                    loadReviewEligibility(currentProduct._id)
+                ]);
+                alert('Đã xóa đánh giá thành công.');
+            } catch (error) {
+                alert(error.message || 'Không thể xóa đánh giá lúc này.');
+            }
+        }
+
+        async function handleCommentReply(commentId, content, submitButton) {
+            if (!commentId || !currentProduct) {
+                return;
+            }
+
+            const trimmedContent = String(content || '').trim();
+            if (!trimmedContent) {
+                alert('Vui lòng nhập nội dung phản hồi.');
+                return;
+            }
+
+            const originalLabel = submitButton?.textContent || '';
+
+            try {
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Đang lưu...';
+                }
+
+                await window.CommentAPI.replyToComment(commentId, { content: trimmedContent });
+                await loadComments(currentProduct._id);
+                alert('Đã lưu phản hồi của admin.');
+            } catch (error) {
+                alert(error.message || 'Không thể lưu phản hồi lúc này.');
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalLabel;
+                }
+            }
+        }
+
+        async function handleCommentReplyDelete(commentId) {
+            if (!commentId || !currentProduct) {
+                return;
+            }
+
+            const confirmed = window.confirm('Bạn có chắc muốn xóa phản hồi admin cho đánh giá này không?');
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                await window.CommentAPI.deleteReply(commentId);
+                await loadComments(currentProduct._id);
+                alert('Đã xóa phản hồi của admin.');
+            } catch (error) {
+                alert(error.message || 'Không thể xóa phản hồi lúc này.');
+            }
+        }
+
+        async function loadSizeChart(product) {
+            try {
+                const response = await window.SizeAPI.getSizeChart();
+                renderSizeChart(response.data || [], product.sizes || [], response.meta?.note || '');
+            } catch (error) {
+                console.error('Error loading size chart:', error);
+                renderSizeChart([], product.sizes || [], 'Không thể tải bảng kích thước lúc này.');
+            }
+        }
+
+        async function loadComments(productId) {
+            try {
+                const response = await window.CommentAPI.getComments(productId, { page: 1, limit: 50 });
+                renderComments(response.data || []);
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                document.getElementById('reviewsList').innerHTML = '<div class="review-empty">Không thể tải đánh giá lúc này.</div>';
+            }
+        }
+
+        async function loadReviewEligibility(productId) {
+            if (!window.apiClient?.isAuthenticated()) {
+                hasRatedCurrentProduct = false;
+                setReviewFormLockedState(true, 'Vui lòng đăng nhập và chỉ đánh giá sau khi đã mua và thanh toán thành công sản phẩm này.');
+                syncReviewRatingState();
+                return;
+            }
+
+            try {
+                const response = await window.CommentAPI.getEligibility(productId);
+                hasRatedCurrentProduct = Boolean(response.data?.hasRated);
+                const formMessage = !response.data?.canComment
+                    ? response.data?.message
+                    : (hasRatedCurrentProduct ? 'Bạn đã chấm sao cho sản phẩm này rồi. Bạn vẫn có thể gửi thêm bình luận và hình ảnh thực tế.' : '');
+                setReviewFormLockedState(!response.data?.canComment, formMessage);
+                syncReviewRatingState();
+            } catch (error) {
+                console.error('Error loading comment eligibility:', error);
+                hasRatedCurrentProduct = false;
+                setReviewFormLockedState(true, error.message || 'Không thể kiểm tra quyền đánh giá lúc này.');
+                syncReviewRatingState();
+            }
+        }
+
+        async function resolveCategoryName(product) {
+            const categoryId = product.categoryId || product.category;
+            if (!categoryId) {
+                return 'Không có danh mục';
+            }
+
+            try {
+                const categoryResponse = await window.CategoryAPI.getCategory(categoryId);
+                return categoryResponse?.data?.name || 'Không có danh mục';
+            } catch (error) {
+                console.warn('Cannot resolve category name:', error);
+                return 'Không có danh mục';
+            }
+        }
+
+        async function loadRelatedProducts(product) {
+            const grid = document.getElementById('relatedProductsGrid');
+
+            try {
+                const params = product.categoryId ? { category: product.categoryId, page: 1, limit: 8 } : { page: 1, limit: 8 };
+                const response = await window.ProductAPI.getProducts(params);
+                const relatedProducts = (response.data || []).filter((item) => String(item._id) !== String(product._id)).slice(0, 4);
+
+                if (!relatedProducts.length) {
+                    grid.innerHTML = '<p>Chưa có sản phẩm liên quan.</p>';
+                    return;
+                }
+
+                grid.innerHTML = relatedProducts.map((item) => `
+                    <article class="product-card-small" onclick="window.location.href='product-detail.html?slug=${encodeURIComponent(item.slug || item._id)}'">
+                        <div class="product-image">
+                            <img src="${getProductImages(item)[0]}" alt="${item.name}" onerror="this.src='../../assets/images/football/hero-gear.svg'">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">${item.name}</h3>
+                            <div class="product-price">${formatCurrency(item.currentPrice || item.price || 0)}</div>
+                            <button class="related-wishlist ${window.isProductWishlisted?.(item._id) ? 'active' : ''}" type="button" data-product='${JSON.stringify(buildWishlistPayload(item)).replace(/'/g, '&apos;')}' onclick="event.stopPropagation()">
+                                <i class="${window.isProductWishlisted?.(item._id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading related products:', error);
+                grid.innerHTML = '<p>Không thể tải sản phẩm liên quan.</p>';
+            }
+        }
+
+        function addCurrentProductToCart(redirectToCart = false) {
+            if (!currentProduct) {
+                return;
+            }
+
+            const quantity = Number(document.getElementById('quantityInput').value || 1);
+            const variant = getMatchingVariant(currentProduct, selectedColor, selectedSize);
+            const image = getImagesForColor(currentProduct, selectedColor)[0] || getProductImages(currentProduct)[0];
+            const unitPrice = Number(variant?.finalPrice ?? currentProduct.currentPrice ?? currentProduct.price ?? 0);
+            const result = window.addItemToCart({
+                productId: currentProduct._id,
+                slug: currentProduct.slug,
+                name: currentProduct.name,
+                price: unitPrice,
+                image,
+                quantity,
+                size: selectedSize,
+                color: selectedColor
+            });
+
+            if (!result?.ok) {
+                return;
+            }
+
+            if (redirectToCart) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            const originalHtml = addToCartBtn.innerHTML;
+            addToCartBtn.innerHTML = '<i class="fas fa-check"></i> Đã thêm vào giỏ';
+            setTimeout(() => {
+                addToCartBtn.innerHTML = originalHtml;
+            }, 1200);
+        }
+
+        async function loadProductDetail() {
+            const identifier = getUrlParameter('slug') || getUrlParameter('id');
+            if (!identifier) {
+                document.getElementById('productTitle').textContent = 'Không tìm thấy sản phẩm';
+                return;
+            }
+
+            try {
+                const response = await window.ProductAPI.getProduct(identifier);
+                const product = response.data;
+                const categoryName = await resolveCategoryName(product);
+                currentProduct = { ...product, categoryName };
+
+                document.getElementById('productTitle').textContent = product.name || 'Không có tên sản phẩm';
+                document.getElementById('breadcrumb-name').textContent = product.name || 'Chi tiết sản phẩm';
+                document.getElementById('ratingCount').textContent = `(${product.commentCount || 0} đánh giá)`;
+                document.getElementById('soldCount').textContent = `${product.views || 0} lượt xem`;
+                document.querySelector('.rating-section .stars').innerHTML = renderStars(product.rating || product.ratingAverage || 0);
+
+                selectedColor = product.defaultVariant?.color || getColorOptions(product)[0]?.name || '';
+                selectedSize = product.defaultVariant?.size || (Array.isArray(product.sizes) && product.sizes.length ? product.sizes[0] : '');
+                syncSelectedVariant(product);
+                renderDescription({ ...product, categoryName });
+                await Promise.all([
+                    loadSizeChart(product),
+                    loadComments(product._id),
+                    loadReviewEligibility(product._id),
+                    loadRelatedProducts(product)
+                ]);
+            } catch (error) {
+                console.error('Error loading product detail:', error);
+                document.getElementById('productTitle').textContent = 'Không thể tải sản phẩm';
+                document.getElementById('descriptionContent').innerHTML = '<p>Không thể tải dữ liệu sản phẩm từ database.</p>';
+            }
+        }
+
+        function setupTabSwitching() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById(tabName).classList.add('active');
+                });
+            });
+        }
+
+        function setupQuantityControls() {
+            document.getElementById('increaseQty').addEventListener('click', function() {
+                const input = document.getElementById('quantityInput');
+                const variant = currentProduct ? getMatchingVariant(currentProduct, selectedColor, selectedSize) : null;
+                const stock = Number(variant?.stock ?? currentProduct?.stock ?? 0);
+                const nextValue = parseInt(input.value, 10) + 1;
+                input.value = stock > 0 ? Math.min(nextValue, stock) : nextValue;
+            });
+
+            document.getElementById('decreaseQty').addEventListener('click', function() {
+                const input = document.getElementById('quantityInput');
+                if (parseInt(input.value, 10) > 1) {
+                    input.value = parseInt(input.value, 10) - 1;
+                }
+            });
+        }
+
+        function setupStarRating() {
+            document.querySelectorAll('.star-rating i').forEach(star => {
+                star.addEventListener('click', function() {
+                    if (document.getElementById('reviewFormWrapper').classList.contains('is-locked') || hasRatedCurrentProduct) {
+                        return;
+                    }
+
+                    const rating = Number(this.getAttribute('data-rating'));
+                    selectedRating = rating;
+                    document.querySelectorAll('.star-rating i').forEach((item, index) => {
+                        if (index < rating) {
+                            item.classList.remove('far');
+                            item.classList.add('fas', 'active');
+                        } else {
+                            item.classList.remove('fas', 'active');
+                            item.classList.add('far');
+                        }
+                    });
+                });
+            });
+        }
+
+        function setupActions() {
+            document.getElementById('addToCartBtn').addEventListener('click', () => addCurrentProductToCart(false));
+            document.getElementById('buyNowBtn').addEventListener('click', () => addCurrentProductToCart(true));
+            document.getElementById('mainImage').addEventListener('click', function() {
+                openImageLightbox(this.dataset.zoomSrc || this.src);
+            });
+            document.getElementById('closeLightbox').addEventListener('click', closeImageLightbox);
+            document.getElementById('imageLightbox').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeImageLightbox();
+                }
+            });
+
+            document.getElementById('relatedProductsGrid').addEventListener('click', function(event) {
+                const wishlistButton = event.target.closest('.related-wishlist');
+                if (!wishlistButton) {
+                    return;
+                }
+
+                const product = JSON.parse(wishlistButton.dataset.product.replace(/&apos;/g, "'"));
+                const result = window.toggleWishlistItem(product);
+                window.setWishlistButtonState(wishlistButton, result.active);
+            });
+
+            document.getElementById('wishlistBtn').addEventListener('click', function() {
+                if (!currentProduct) {
+                    return;
+                }
+
+                const result = window.toggleWishlistItem(buildWishlistPayloadFromCurrent());
+                window.setWishlistButtonState(this, result.active, { textMode: true });
+            });
+
+            document.getElementById('reviewImages').addEventListener('change', handleReviewImageSelection);
+            document.getElementById('reviewImagePreview').addEventListener('click', handleReviewImagePreviewClick);
+            document.getElementById('reviewsList').addEventListener('click', function(event) {
+                const deleteButton = event.target.closest('.review-delete-btn');
+                if (deleteButton) {
+                    handleCommentDelete(deleteButton.dataset.commentId);
+                    return;
+                }
+
+                const deleteReplyButton = event.target.closest('.review-reply-delete-btn');
+                if (deleteReplyButton) {
+                    handleCommentReplyDelete(deleteReplyButton.dataset.commentId);
+                    return;
+                }
+
+                const imageButton = event.target.closest('.review-image-thumb');
+                if (!imageButton) {
+                    return;
+                }
+
+                openImageLightbox(imageButton.dataset.reviewImage);
+            });
+
+            document.getElementById('reviewsList').addEventListener('submit', function(event) {
+                const replyForm = event.target.closest('.admin-reply-form');
+                if (!replyForm) {
+                    return;
+                }
+
+                event.preventDefault();
+                const textarea = replyForm.querySelector('.admin-reply-textarea');
+                const submitButton = replyForm.querySelector('.review-reply-submit-btn');
+                handleCommentReply(replyForm.dataset.commentId, textarea?.value || '', submitButton);
+            });
+
+            document.getElementById('submitReviewForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                if (!currentProduct) {
+                    return;
+                }
+
+                if (!hasRatedCurrentProduct && !selectedRating) {
+                    alert('Vui lòng chọn số sao đánh giá.');
+                    return;
+                }
+
+                const content = document.getElementById('reviewText').value.trim();
+                if (!content) {
+                    alert('Vui lòng nhập nội dung đánh giá.');
+                    return;
+                }
+
+                try {
+                    const formData = new FormData();
+                    formData.append('productId', currentProduct._id);
+                    if (!hasRatedCurrentProduct && selectedRating) {
+                        formData.append('rating', String(selectedRating));
+                    }
+                    formData.append('content', content);
+                    selectedReviewImages.forEach((file) => {
+                        formData.append('images', file);
+                    });
+
+                    await window.CommentAPI.createCommentForm(formData);
+
+                    document.getElementById('reviewText').value = '';
+                    selectedRating = 0;
+                    resetReviewImageSelection();
+                    document.querySelectorAll('.star-rating i').forEach((item) => {
+                        item.classList.remove('fas', 'active');
+                        item.classList.add('far');
+                    });
+
+                    alert('Đánh giá của bạn đã được gửi thành công.');
+                    await Promise.all([
+                        loadComments(currentProduct._id),
+                        loadReviewEligibility(currentProduct._id)
+                    ]);
+                } catch (error) {
+                    alert(error.message || 'Không thể gửi đánh giá lúc này.');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadCommonComponents();
+            updateCartBadge();
+            updateWishlistBadge();
+            updateHeaderAuth();
+            await window.syncWishlistFromServer?.({ mergeLocal: true });
+            setupTabSwitching();
+            setupQuantityControls();
+            setupStarRating();
+            setupActions();
+            await loadProductDetail();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeImageLightbox();
+            }
+        });
+    </script>
+</body>
+</html>

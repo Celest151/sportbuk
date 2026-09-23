@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#171b20"/>
+  <path d="M300 310h600l85 750-280 35-105-430-105 430-280-35z" fill="#242a30" stroke="#3d454d" stroke-width="8"/>
+  <path d="M300 310h600v90H300zM320 455h560" stroke="#ff3b30" stroke-width="22"/>
+  <text x="70" y="1400" fill="#92979f" font-family="Arial,sans-serif" font-size="34" letter-spacing="8">MATCH SHORTS</text>
+</svg>
