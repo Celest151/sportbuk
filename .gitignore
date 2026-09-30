@@ -71,5 +71,9 @@ frontend/dist/
 # Raw image staging; renamed catalog assets live under frontend/public/assets/
 /images/
 
+# Local helper documents
+/GITHUB_PUSH_COMMANDS.md
+/IMAGE_ASSET_GUIDE.md
+
 # next.js build output
 .next

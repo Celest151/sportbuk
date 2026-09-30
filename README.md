@@ -4,9 +4,7 @@ SPORTBUK is a football clothing and equipment catalog built as a Web Application
 
 > **Status: Under production.** This project is still being developed and is not production-ready. Customer checkout is not available in the active storefront.
 
-Active customer and admin experiences live in `frontend/`. The former vanilla frontend is archived locally as `frontend-legacy/` and excluded from this repository. Lecture PDFs in `slides/` are ignored; presentation Markdown in `slides/presentation/` is tracked.
-
-Final presentation materials: [slide plan](slides/presentation/SLIDE_PLAN.md), [5–7 minute speaker script](slides/presentation/SPEAKER_SCRIPT.md), and [demo runbook with examiner Q&A](slides/presentation/DEMO_RUNBOOK.md).
+Active customer and admin experiences live in `frontend/`. The former vanilla frontend is archived locally as `frontend-legacy/` and excluded from this repository.
 
 ## Current Scope
 
@@ -63,12 +61,6 @@ Browser (React and TypeScript)
 MongoDB database `sportbuk_shop` stores shop records as documents, including products (names, descriptions, prices, stock, color/size variants, image URLs), categories, collections, size guides, accounts, wishlists, and signed-in carts. The backend defines these document shapes in `backend/src/models/` and reads/writes them through API routes in `backend/src/routes/`. For example, an admin product edit sends a request to `/api/v1/products/:id`, which updates a `Product` document through Mongoose; the storefront then reads that product from the API.
 
 MongoDB stores **paths to uploaded images**, not the image file contents. Files uploaded in the dashboard live in `backend/uploads/`, while bundled demo images live in `frontend/public/`. Guest bags, guest wishlists, and contact drafts are saved in the browser's local storage instead of MongoDB. Journal articles are currently defined in frontend source.
-
-### Course Concepts in This Project
-
-The local course slides cover HTML structure and forms (`2-HTML.pdf`), CSS layout and the box model (`3-CSS.pdf`), JavaScript events and form validation (`4-JavaScript.pdf`), asynchronous Node.js and HTTP servers (`6-NodeJS.pdf`), Flask routes (`8-Python Flask.pdf`), and relational/NoSQL databases (`9-Database.pdf`). SPORTBUK applies those concepts through React forms and events, responsive CSS, `fetch` requests, Express routes, and persistent MongoDB documents.
-
-The database lecture introduces MongoDB as a NoSQL option but uses MySQL, Flask, and SQLAlchemy for its sample registration app. SPORTBUK uses **MongoDB + Mongoose + Express** for the same core ideas: models, routes, validation, and persisted user/catalog data. Flask and MySQL are examples from the slides, not dependencies of this project.
 
 ## Requirements
 
