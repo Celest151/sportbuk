@@ -67,7 +67,7 @@ export function Header() {
   return (
     <>
       <div className="utility-bar" aria-label="Utility navigation">
-        <Link to="/contact">Find a Store</Link>
+        <Link to="/stores">Find a Store</Link>
         <Link to="/contact">Help</Link>
         {user ? (
           <Link to="/account">Account</Link>
@@ -100,13 +100,13 @@ export function Header() {
                 <label htmlFor="site-search">What are you looking for?</label>
                 <div className="search-field">
                   <MagnifyingGlass size={28} aria-hidden="true" />
-                  <input ref={searchInputRef} id="site-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search shirts, gloves, balls" autoComplete="off" />
+                  <input ref={searchInputRef} id="site-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search jerseys, boots, socks" autoComplete="off" />
                   {query && <button className="search-clear" type="button" onClick={() => { setQuery(''); searchInputRef.current?.focus() }}>Clear</button>}
                   <button className="search-submit" type="submit" aria-label="Search products" disabled={!query.trim()}><ArrowRight size={22} weight="bold" /></button>
                 </div>
                 <div className="search-shortcuts">
                   <span>Popular searches</span>
-                  {['Match shirts', 'Goalkeeper gloves', 'Training tops', 'Football'].map((term) => (
+                  {['Jerseys', 'Boots', 'Socks', 'Trophy'].map((term) => (
                     <Link to={`/products?search=${encodeURIComponent(term)}`} onClick={closeSearch} key={term}>{term}<ArrowRight size={14} /></Link>
                   ))}
                 </div>

@@ -4,7 +4,9 @@ SPORTBUK is a football clothing and equipment catalog built as a Web Application
 
 > **Status: Under production.** This project is still being developed and is not production-ready. Customer checkout is not available in the active storefront.
 
-Active customer and admin experiences live in `frontend/`. The former vanilla frontend is archived locally as `frontend-legacy/` and is excluded from this repository, along with `slides/`.
+Active customer and admin experiences live in `frontend/`. The former vanilla frontend is archived locally as `frontend-legacy/` and excluded from this repository. Lecture PDFs in `slides/` are ignored; presentation Markdown in `slides/presentation/` is tracked.
+
+Final presentation materials: [slide plan](slides/presentation/SLIDE_PLAN.md), [5–7 minute speaker script](slides/presentation/SPEAKER_SCRIPT.md), and [demo runbook with examiner Q&A](slides/presentation/DEMO_RUNBOOK.md).
 
 ## Current Scope
 
@@ -53,8 +55,20 @@ Browser (React and TypeScript)
               |
          Mongoose ODM
               |
-           MongoDB
+            MongoDB
 ```
+
+### What MongoDB Stores
+
+MongoDB database `sportbuk_shop` stores shop records as documents, including products (names, descriptions, prices, stock, color/size variants, image URLs), categories, collections, size guides, accounts, wishlists, and signed-in carts. The backend defines these document shapes in `backend/src/models/` and reads/writes them through API routes in `backend/src/routes/`. For example, an admin product edit sends a request to `/api/v1/products/:id`, which updates a `Product` document through Mongoose; the storefront then reads that product from the API.
+
+MongoDB stores **paths to uploaded images**, not the image file contents. Files uploaded in the dashboard live in `backend/uploads/`, while bundled demo images live in `frontend/public/`. Guest bags, guest wishlists, and contact drafts are saved in the browser's local storage instead of MongoDB. Journal articles are currently defined in frontend source.
+
+### Course Concepts in This Project
+
+The local course slides cover HTML structure and forms (`2-HTML.pdf`), CSS layout and the box model (`3-CSS.pdf`), JavaScript events and form validation (`4-JavaScript.pdf`), asynchronous Node.js and HTTP servers (`6-NodeJS.pdf`), Flask routes (`8-Python Flask.pdf`), and relational/NoSQL databases (`9-Database.pdf`). SPORTBUK applies those concepts through React forms and events, responsive CSS, `fetch` requests, Express routes, and persistent MongoDB documents.
+
+The database lecture introduces MongoDB as a NoSQL option but uses MySQL, Flask, and SQLAlchemy for its sample registration app. SPORTBUK uses **MongoDB + Mongoose + Express** for the same core ideas: models, routes, validation, and persisted user/catalog data. Flask and MySQL are examples from the slides, not dependencies of this project.
 
 ## Requirements
 
@@ -88,7 +102,7 @@ npm run seed:demo
 npm start
 ```
 
-Run `npm run seed:demo` only when initializing or deliberately resetting the demo catalog. It overwrites demo products, categories, and collections, including image references edited through the dashboard.
+Run `npm run seed:demo` to initialize the demo catalog or restore missing demo records. Existing dashboard edits, including uploaded image references, are preserved.
 
 Backend health endpoint:
 
@@ -116,7 +130,7 @@ npm run dev:full
 
 ## Demo Data
 
-Run this command from `backend` only to initialize or reset demo catalog data:
+Run this command from `backend` to initialize or restore missing demo catalog data:
 
 ```bash
 npm run seed:demo
@@ -124,12 +138,14 @@ npm run seed:demo
 
 The demo seed initializes:
 
-- 4 football categories
-- 8 football products with colors, sizes, prices, stock, and SKUs
+- 3 football categories: áo đấu câu lạc bộ, giày và tất bóng đá, phụ kiện khác
+- 9 photographed football products with colors, sizes, prices, stock, and SKUs
 - 2 football collections
 - 16 size-guide records
 
-The script removes known earlier demo records, replaces size-guide records, and resets the images and other fields of seeded catalog entries. **Do not rerun it after customizing demo products, categories, collections, or their images unless you intend to reset them.** Source: `backend/scripts/seed-demo.js`.
+The script inserts missing demo records without overwriting existing products, categories, collections, size guides, or uploaded-image references. Source: `backend/scripts/seed-demo.js`.
+
+If an existing database still contains the older eight illustrated products, run `npm run catalog:replace-demo` **once** from `backend/` to insert the photographed catalog and remove only those older demo products, their obsolete categories, and collections. This command does not remove other custom catalog entries. It stops if an old product is referenced by an order. Current catalog prices and stock are example values for the course demo; adjust them in the admin dashboard.
 
 ## Demo Admin
 
@@ -160,15 +176,19 @@ Main frontend modules:
 - Theme: `frontend/src/styles/global.css`
 - Demo products and collections: `backend/scripts/seed-demo.js`
 
-Seed data is intended for initial setup. Later catalog changes should be made in the admin dashboard.
+Seed data is intended for initial setup and restoring missing demo records. Make subsequent catalog changes in the admin dashboard.
+
+To translate existing photographed-catalog names, descriptions, and gallery alt text to English, run `npm run catalog:english` from `backend/`. This migration matches known Vietnamese text, including shortened sock names, even when admin edits have changed product slugs. It also updates wishlist name snapshots. Product/variant identifiers and unrelated custom text are preserved. New seed records use English catalog names and descriptions.
 
 ## Replacing Football Images
 
-Upload product galleries, category images, and collection images through the admin dashboard. Managed images are stored under `backend/uploads/` and referenced in MongoDB as `/uploads/...` URLs. The frontend resolves these URLs against `VITE_API_ORIGIN`; demo images in `frontend/public/assets/` are tracked separately.
+The photographed demo catalog is included in `frontend/public/assets/images/catalog/`. Files are organized by product slug and named by color and view (for example `red-front.png`, `red-back.png`). MongoDB stores the image URLs and color associations. Upload additional product galleries, category images, and collection images through the admin dashboard; those managed files live under `backend/uploads/` and are referenced in MongoDB as `/uploads/...` URLs.
+
+Customer category images appear as selectable tiles on `/products`, alongside the category dropdown filter.
 
 `backend/uploads/` and MongoDB data are not stored in Git. A GitHub clone needs its own MongoDB data and uploaded files (or new uploads through the dashboard). Keep a backup of both if you move the catalog to another machine.
 
-For a reproducible demo catalog, update assets under `frontend/public/assets/` and the matching paths in `backend/scripts/seed-demo.js` **before** seeding a fresh database; do not rerun the seed over dashboard-customized records.
+For a reproducible demo catalog, update assets under `frontend/public/assets/` and the matching paths in `backend/scripts/seed-demo.js` before seeding a fresh database. Changes to seed definitions do not overwrite existing dashboard-customized records.
 
 ## Main API Routes
 
@@ -209,8 +229,8 @@ Customer pages follow the photography-first commerce system in `DESIGN.md` and r
 ## Testing Status
 
 - Demo seed script syntax verified with `node --check`.
-- Seed can be rerun for a fresh demo reset, but it overwrites customized demo records.
-- MongoDB verified with 8 football products, 4 categories, and 2 collections.
+- Seed can be rerun to restore missing demo records without overwriting customized ones.
+- MongoDB demo catalog contains 9 photographed products, 3 categories, and 2 collections after the replacement command.
 - Seeded catalog and storefront image references use local football assets; no Unsplash image references remain.
 - No Jest test files currently exist; `npm test` reports `No tests found`.
 

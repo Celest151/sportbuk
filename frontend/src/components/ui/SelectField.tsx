@@ -29,7 +29,7 @@ export function SelectField({ id, value, options, onValueChange, ariaLabel }: Se
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Content className="select-content" position="popper" sideOffset={7} collisionPadding={16}>
+        <Select.Content className="select-content" position="popper" sideOffset={3} collisionPadding={16}>
           <Select.Viewport className="select-viewport">
             {options.map((option) => (
               <Select.Item className="select-item" value={option.value || EMPTY_VALUE} key={option.value || EMPTY_VALUE}>

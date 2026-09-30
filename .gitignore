@@ -63,9 +63,13 @@ typings/
 frontend/dist/
 *.tsbuildinfo
 
-# Archived reference and presentation files
+# Archived frontend and local lecture PDFs; keep presentation notes
 /frontend-legacy/
-/slides/
+/slides/*
+!/slides/presentation/
+
+# Raw image staging; renamed catalog assets live under frontend/public/assets/
+/images/
 
 # next.js build output
 .next

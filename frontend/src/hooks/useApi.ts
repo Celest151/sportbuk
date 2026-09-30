@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { apiRequest } from '../lib/api'
+import { englishCatalogData } from '../features/catalog/englishCatalog'
 
 export function useApi<T>(path: string | null, token?: string | null) {
   const [data, setData] = useState<T | null>(null)
@@ -14,7 +15,7 @@ export function useApi<T>(path: string | null, token?: string | null) {
     setError('')
     apiRequest<{ data: T }>(path, { signal: controller.signal }, token)
       .then((response) => {
-        setData(response.data)
+        setData(!token && /^\/(products|categories|collections)(?:[/?]|$)/.test(path) ? englishCatalogData(response.data) : response.data)
         setResolvedPath(path)
       })
       .catch((reason: Error) => {

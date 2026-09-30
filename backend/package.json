@@ -7,6 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "seed:demo": "node scripts/seed-demo.js",
+    "catalog:replace-demo": "node scripts/replace-demo-catalog.js",
+    "catalog:english": "node scripts/translate-catalog-to-english.js",
     "check:vnpay": "node scripts/check-vnpay.js",
     "inspect:vnpay:last": "node scripts/inspect-last-vnpay.js",
     "test": "jest --detectOpenHandles"

@@ -3,6 +3,7 @@ import { apiRequest } from '../../lib/api'
 import { productPrice } from '../../lib/format'
 import type { BagItem, Product, WishlistItem } from '../../types'
 import { useAuth } from '../auth/AuthProvider'
+import { englishCatalogText } from '../catalog/englishCatalog'
 
 interface CartResponse {
   data: { items: BagItem[] }
@@ -76,7 +77,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
           return [...current, { product, quantity: 1, selectedSize: size, selectedColor: color, price: productPrice(product), discount: product.discount }]
         })
       }
-      setNotice(`${product.name} added to your training bag.`)
+      setNotice(`${englishCatalogText(product.name)} added to your training bag.`)
       return true
     } catch (reason) {
       setNotice(reason instanceof Error ? reason.message : 'Could not add this product to your training bag.')
@@ -145,7 +146,7 @@ export function ShopProvider({ children }: { children: ReactNode }) {
         addedAt: new Date().toISOString(),
       }, ...current])
     }
-    setNotice(exists ? 'Removed from wishlist.' : `${product.name} saved to wishlist.`)
+    setNotice(exists ? 'Removed from wishlist.' : `${englishCatalogText(product.name)} saved to wishlist.`)
   }
 
   return (

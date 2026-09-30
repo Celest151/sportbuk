@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ProductCard } from '../components/catalog/ProductCard'
 import { EmptyState, ErrorState, LoadingGrid } from '../components/ui/PageState'
+import { ProductImage } from '../components/ui/ProductImage'
 import { SelectField } from '../components/ui/SelectField'
 import { useApi } from '../hooks/useApi'
 import { formatPrice } from '../lib/format'
@@ -59,6 +60,10 @@ export function ShopPage() {
   return (
     <div className="page-shell page-top">
       <div className="catalog-title"><div><h1>{search ? `Results for “${search}”` : 'Football gear'}</h1><p>{products.data?.length ?? 0} products</p></div><button className="button button-soft filter-toggle" type="button" onClick={() => setFiltersOpen(true)}><Faders size={19} /> Filters</button></div>
+      {categories.data && categories.data.length > 0 && <nav className="catalog-categories" aria-label="Browse categories">
+        <div className="catalog-categories-head"><strong>Browse by category</strong>{category && <button type="button" onClick={() => update('category', '')}>View all gear</button>}</div>
+        <div className="catalog-category-list">{categories.data.map((item) => <button className={category === item._id ? 'catalog-category active' : 'catalog-category'} type="button" aria-pressed={category === item._id} onClick={() => update('category', item._id)} key={item._id}><span className="catalog-category-image">{item.image ? <ProductImage src={item.image} alt="" seed={item.slug} /> : null}</span><span>{item.name}</span></button>)}</div>
+      </nav>}
       <div className="catalog-layout">
         <aside className={filtersOpen ? 'filters is-open' : 'filters'}>
           <div className="filter-mobile-head"><strong>Filters</strong><button className="icon-button" type="button" aria-label="Close filters" onClick={() => setFiltersOpen(false)}><X size={22} /></button></div>

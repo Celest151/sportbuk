@@ -11,6 +11,7 @@ import { NotFoundPage } from '../pages/NotFoundPage'
 import { ProductPage } from '../pages/ProductPage'
 import { ShopPage } from '../pages/ShopPage'
 import { SizeGuidePage } from '../pages/SizeGuidePage'
+import { StorePage } from '../pages/StorePage'
 import { WishlistPage } from '../pages/WishlistPage'
 import { AdminLayout } from '../components/admin/AdminLayout'
 import { AdminDashboardPage } from '../pages/admin/AdminDashboardPage'
@@ -40,6 +41,7 @@ export function App() {
         <Route path="journal" element={<JournalPage />} />
         <Route path="journal/:slug" element={<JournalArticlePage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="stores" element={<StorePage />} />
         <Route path="size-guide" element={<SizeGuidePage />} />
         <Route path="wishlist" element={<WishlistPage />} />
         <Route path="bag" element={<BagPage />} />

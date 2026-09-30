@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { fallbackImage, resolveImageUrl } from '../../lib/api'
 
 interface ProductImageProps {
@@ -9,15 +9,16 @@ interface ProductImageProps {
 }
 
 export function ProductImage({ src, alt, seed, className }: ProductImageProps) {
-  const [failed, setFailed] = useState(false)
-  useEffect(() => setFailed(false), [src])
+  const [failedUrl, setFailedUrl] = useState<string | null>(null)
+  const imageUrl = resolveImageUrl(src, seed)
+  const failed = failedUrl === imageUrl
   return (
     <img
       className={className}
-      src={failed ? fallbackImage(seed) : resolveImageUrl(src, seed)}
+      src={failed ? fallbackImage(seed) : imageUrl}
       alt={alt}
       loading="lazy"
-      onError={() => setFailed(true)}
+      onError={() => { if (!failed) setFailedUrl(imageUrl) }}
     />
   )
 }

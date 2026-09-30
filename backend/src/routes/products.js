@@ -116,47 +116,80 @@ const normalizeLegacyColors = (value) => {
 
 const normalizeGalleryEntries = ({ req, existingProduct }) => {
   const existingImages = normalizeProductImages(existingProduct);
+  const hasGalleryEntries = Object.prototype.hasOwnProperty.call(req.body, 'galleryEntries');
   const galleryEntries = parseJsonField(req.body.galleryEntries, null, 'galleryEntries');
   const galleryFiles = req.files?.galleryImages || [];
   const legacyImageFile = req.files?.image?.[0] || null;
+  const allowedUrls = new Set([
+    ...existingImages.map((image) => image.url),
+    existingProduct?.image
+  ].filter(Boolean));
 
-  if (galleryEntries !== null && !Array.isArray(galleryEntries)) {
+  if (legacyImageFile && (hasGalleryEntries || galleryFiles.length)) {
+    throw new AppError('Use either image or galleryImages, not both', 400);
+  }
+
+  if (hasGalleryEntries && !Array.isArray(galleryEntries)) {
     throw new AppError('galleryEntries must be an array', 400);
   }
 
-  if (Array.isArray(galleryEntries)) {
+  if (hasGalleryEntries) {
     if (galleryEntries.length === 0 || galleryEntries.length > 20) {
       throw new AppError('Products require between 1 and 20 gallery images', 400);
     }
 
-    const mappedEntries = galleryEntries
-      .map((entry, index) => {
-        const uploadIndex = Number(entry?.uploadIndex);
-        const uploadFile = Number.isInteger(uploadIndex) ? galleryFiles[uploadIndex] : null;
-        const url = uploadFile
-          ? buildUploadedFileUrl(uploadFile)
-          : String(entry?.url || '').trim();
+    const usedUploads = new Set();
+    const mappedEntries = galleryEntries.map((entry) => {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        throw new AppError('Each gallery entry must be an image object', 400);
+      }
 
-        if (!url) {
-          return null;
+      const hasUploadIndex = Object.prototype.hasOwnProperty.call(entry, 'uploadIndex');
+      const hasUrl = Object.prototype.hasOwnProperty.call(entry, 'url');
+      if (hasUploadIndex === hasUrl) {
+        throw new AppError('Each gallery entry must have exactly one uploadIndex or existing url', 400);
+      }
+
+      let url;
+      if (hasUploadIndex) {
+        const uploadIndex = entry.uploadIndex;
+        if (!Number.isInteger(uploadIndex) || uploadIndex < 0 || uploadIndex >= galleryFiles.length || usedUploads.has(uploadIndex)) {
+          throw new AppError('Invalid or repeated gallery uploadIndex', 400);
         }
+        usedUploads.add(uploadIndex);
+        url = buildUploadedFileUrl(galleryFiles[uploadIndex]);
+      } else {
+        url = typeof entry.url === 'string' ? entry.url.trim() : '';
+        if (!allowedUrls.has(url)) {
+          throw new AppError('Gallery url must belong to this product', 400);
+        }
+      }
 
-        return {
-          url,
-          color: entry?.color ? normalizeColorName(entry.color) : null,
-          alt: String(entry?.alt || '').trim(),
-          isPrimary: toBoolean(entry?.isPrimary, false)
-        };
-      })
-      .filter(Boolean);
+      if (!url || (entry.color != null && typeof entry.color !== 'string') || (entry.alt != null && typeof entry.alt !== 'string')) {
+        throw new AppError('Invalid gallery image metadata', 400);
+      }
 
-    if (mappedEntries.length > 0) {
-      const primaryIndex = mappedEntries.findIndex((item) => item.isPrimary);
-      return mappedEntries.map((item, index) => ({
-        ...item,
-        isPrimary: index === (primaryIndex >= 0 ? primaryIndex : 0)
-      }));
+      return {
+        url,
+        color: entry.color ? normalizeColorName(entry.color) : null,
+        alt: String(entry.alt || '').trim(),
+        isPrimary: toBoolean(entry.isPrimary, false)
+      };
+    });
+
+    if (usedUploads.size !== galleryFiles.length) {
+      throw new AppError('Every uploaded gallery image must be included in galleryEntries', 400);
     }
+
+    if (mappedEntries.filter((item) => item.isPrimary).length > 1) {
+      throw new AppError('Only one gallery image can be primary', 400);
+    }
+
+    const primaryIndex = mappedEntries.findIndex((item) => item.isPrimary);
+    return mappedEntries.map((item, index) => ({
+      ...item,
+      isPrimary: index === (primaryIndex >= 0 ? primaryIndex : 0)
+    }));
   }
 
   if (galleryFiles.length > 0) {
@@ -285,6 +318,11 @@ const buildProductPayload = async (req, existingProduct = null) => {
   const normalizedVariants = variants.length > 0
     ? variants
     : normalizeLegacyVariants(req, existingProduct);
+
+  const variantColors = new Set(normalizedVariants.map((variant) => variant.color));
+  if (galleryEntries.some((image) => image.color && !variantColors.has(image.color))) {
+    throw new AppError('Gallery image colors must match a product variant color', 400);
+  }
 
   ensureUniqueVariantKeys(normalizedVariants);
   await assignVariantSkus({
@@ -467,7 +505,7 @@ router.put('/:id', authenticate, adminOnly, upload.fields([
   try {
     const existingProduct = await productController.findProductById(req.params.id);
     if (!existingProduct) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
+      throw new AppError('Product not found', 404);
     }
 
     const payload = await buildProductPayload(req, existingProduct);

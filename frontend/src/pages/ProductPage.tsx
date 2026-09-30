@@ -6,6 +6,7 @@ import { ErrorState } from '../components/ui/PageState'
 import { useShop } from '../features/shop/ShopProvider'
 import { useApi } from '../hooks/useApi'
 import { formatPrice, productPrice } from '../lib/format'
+import { englishCatalogText } from '../features/catalog/englishCatalog'
 import type { Product, ProductGalleryImage } from '../types'
 
 function getGalleryImages(product: Product | null, color: string): ProductGalleryImage[] {
@@ -81,7 +82,7 @@ export function ProductPage() {
         <h1>{product.name}</h1>
         <div className="detail-price">{formatPrice(activeVariant?.finalPrice ?? productPrice(product))}{product.discount > 0 && <span>{product.discount}% off</span>}</div>
         <p className={available ? 'stock in-stock' : 'stock out-stock'}><Check size={17} weight="bold" /> {available ? `${activeVariant?.stock ?? product.stock} in stock` : 'Out of stock'}</p>
-        {product.colorOptions && product.colorOptions.length > 0 && <fieldset><legend>Color: {color}</legend><div className="swatches">{product.colorOptions.map((option) => <button className={color === option.name ? 'swatch active' : 'swatch'} style={{ '--swatch': option.code } as React.CSSProperties} type="button" aria-label={option.name} onClick={() => chooseColor(option.name)} key={option.name} />)}</div></fieldset>}
+        {product.colorOptions && product.colorOptions.length > 0 && <fieldset><legend>Color: {englishCatalogText(color)}</legend><div className="swatches">{product.colorOptions.map((option) => <button className={color === option.name ? 'swatch active' : 'swatch'} style={{ '--swatch': option.code } as React.CSSProperties} type="button" aria-label={englishCatalogText(option.name)} onClick={() => chooseColor(option.name)} key={option.name} />)}</div></fieldset>}
         {product.sizes && product.sizes.length > 0 && <fieldset><legend className="size-selector-head"><span>Choose a size</span>{product.sizeGuideType && product.sizeGuideType !== 'none' && <Link className="size-guide-link" to={`/size-guide#${product.sizeGuideType}`}><Ruler size={20} /> Size guide</Link>}</legend><div className="size-grid">{product.sizes.map((item) => { const variant = product.variants?.find((entry) => entry.color === color && entry.size === item); const disabled = hasVariants && (!variant || variant.stock <= 0); return <button className={size === item ? 'active' : ''} type="button" disabled={disabled} onClick={() => setSize(item)} key={item}>{item}</button> })}</div></fieldset>}
         <div className="detail-actions"><button className={added ? 'button button-dark detail-add is-added' : 'button button-dark detail-add'} type="button" disabled={!available} onClick={() => void handleAddToBag()}>{added && <Check size={19} weight="bold" />}{added ? 'Added to training bag' : 'Add to training bag'}</button><button className="button button-soft" type="button" onClick={() => void toggleWishlist(product, size, color)}><Heart size={20} weight={isWishlisted(product._id) ? 'fill' : 'regular'} /> {isWishlisted(product._id) ? 'Saved' : 'Save'}</button></div>
         <p className="product-description">{product.description}</p>

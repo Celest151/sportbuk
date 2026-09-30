@@ -1,4 +1,4 @@
-const PRODUCT_SIZE_ENUM = ['XXS', 'XS', 'S', 'S Tall', 'M', 'M Tall', 'L', 'L Tall', 'XL', 'XL Tall', 'XXL', 'XXL Tall', '3XL', '3XL Tall', '4XL', '4XL Tall', 'One Size'];
+const PRODUCT_SIZE_ENUM = ['XXS', 'XS', 'S', 'S Tall', 'M', 'M Tall', 'L', 'L Tall', 'XL', 'XL Tall', 'XXL', 'XXL Tall', '3XL', '3XL Tall', '4XL', '4XL Tall', 'EU 39', 'EU 40', 'EU 41', 'EU 42', 'EU 43', 'EU 44', 'EU 45', 'EU 46', 'One Size'];
 
 const SIZE_ORDER = PRODUCT_SIZE_ENUM.reduce((map, size, index) => {
   map[size] = index;

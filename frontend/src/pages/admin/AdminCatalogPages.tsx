@@ -4,6 +4,7 @@ import { useAuth } from '../../features/auth/AuthProvider'
 import { apiRequest, resolveImageUrl } from '../../lib/api'
 import { formatPrice } from '../../lib/format'
 import type { Product, ProductGalleryImage } from '../../types'
+import { ImageCropDialog } from '../../components/admin/ImageCropDialog'
 import { AdminEmpty, AdminError, AdminPage, Status } from './AdminDashboardPage'
 
 interface AdminCategory { _id: string; name: string; description?: string; image?: string | null; isActive: boolean; displayOrder: number; parent?: { _id: string; name: string } | string | null }
@@ -34,7 +35,7 @@ function Drawer({ title, close, children }: { title: string; close: () => void; 
   return <><button className="admin-drawer-backdrop" type="button" aria-label="Close form" onClick={close} /><aside className="admin-drawer"><header><h2>{title}</h2><button type="button" aria-label="Close form" onClick={close}><X size={22} /></button></header>{children}</aside></>
 }
 
-const PRODUCT_SIZES = ['XXS', 'XS', 'S', 'S Tall', 'M', 'M Tall', 'L', 'L Tall', 'XL', 'XL Tall', 'XXL', 'XXL Tall', '3XL', '3XL Tall', '4XL', '4XL Tall', 'One Size']
+const PRODUCT_SIZES = ['XXS', 'XS', 'S', 'S Tall', 'M', 'M Tall', 'L', 'L Tall', 'XL', 'XL Tall', 'XXL', 'XXL Tall', '3XL', '3XL Tall', '4XL', '4XL Tall', 'EU 39', 'EU 40', 'EU 41', 'EU 42', 'EU 43', 'EU 44', 'EU 45', 'EU 46', 'One Size']
 let editorRowId = 0
 const nextRowId = () => `editor-row-${editorRowId += 1}`
 
@@ -92,6 +93,8 @@ function ProductEditor({ product, categories, saving, onSave }: { product: Produ
   const [colorGroups, setColorGroups] = useState<ColorVariantDraft[]>(() => createColorGroups(product))
   const [discount, setDiscount] = useState(product?.discount ?? 0)
   const [formError, setFormError] = useState('')
+  const [cropId, setCropId] = useState<string | null>(null)
+  const cropRow = gallery.find((row) => row.id === cropId)
 
   function updateGallery(id: string, patch: Partial<GalleryDraft>) {
     setGallery((rows) => rows.map((row) => row.id === id ? { ...row, ...patch } : row))
@@ -205,12 +208,14 @@ function ProductEditor({ product, categories, saving, onSave }: { product: Produ
 
     <fieldset className="admin-builder"><legend>Preview images</legend><p>Choose which color each image belongs to, or keep it shared across every color.</p>
       <div className="admin-gallery-builder">{gallery.map((row, index) => <article className="admin-gallery-row" key={row.id}>
-        <div className="admin-gallery-preview">{row.previewUrl ? <img src={row.previewUrl.startsWith('data:') ? row.previewUrl : resolveImageUrl(row.previewUrl)} alt="" /> : <ImageSquare size={26} />}</div>
+        <div className="admin-gallery-media"><div className="admin-gallery-preview">{row.previewUrl ? <img src={row.previewUrl.startsWith('data:') ? row.previewUrl : resolveImageUrl(row.previewUrl)} alt="" /> : <ImageSquare size={26} />}</div><button className="admin-crop-button" type="button" disabled={!row.previewUrl} onClick={() => setCropId(row.id)}>Crop</button></div>
         <div className="admin-gallery-fields"><label>Image<input type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => chooseFile(row.id, event.target.files?.[0] || null)} /></label><div className="admin-form-grid"><label>Show for<select value={row.color || ''} onChange={(event) => updateGallery(row.id, { color: event.target.value || null })}><option value="">All colors</option>{colorGroups.filter((group) => group.name.trim()).map((group) => <option key={group.id} value={group.name}>{group.name}</option>)}</select></label><label>Alt text<input value={row.alt} placeholder={product?.name || 'Product view'} onChange={(event) => updateGallery(row.id, { alt: event.target.value })} /></label></div><label className="admin-checkbox"><input type="radio" name="primaryGallery" checked={row.isPrimary} onChange={() => setGallery((rows) => rows.map((item) => ({ ...item, isPrimary: item.id === row.id })))} /> Primary image</label></div>
         <div className="admin-builder-actions"><button type="button" aria-label="Move image up" disabled={index === 0} onClick={() => moveGallery(index, -1)}><ArrowUp size={17} /></button><button type="button" aria-label="Move image down" disabled={index === gallery.length - 1} onClick={() => moveGallery(index, 1)}><ArrowDown size={17} /></button><button className="danger" type="button" aria-label="Remove image" onClick={() => removeGallery(row.id)}><Trash size={17} /></button></div>
       </article>)}</div>
       <button className="admin-secondary" type="button" disabled={gallery.length >= 20} onClick={() => setGallery((rows) => [...rows, createGalleryDraft()])}><Plus size={16} /> Add image</button>
     </fieldset>
+
+    {cropRow && <ImageCropDialog src={cropRow.previewUrl.startsWith('data:') ? cropRow.previewUrl : resolveImageUrl(cropRow.previewUrl)} filename={cropRow.file?.name || cropRow.existingUrl.split('/').pop() || 'product-image'} onCancel={() => setCropId(null)} onApply={(file) => { chooseFile(cropRow.id, file); setCropId(null) }} />}
 
     <div className="admin-checks"><label><input name="isActive" type="checkbox" value="true" defaultChecked={product?.isActive !== false} /> Active</label><label><input name="isFeatured" type="checkbox" value="true" defaultChecked={product?.isFeatured} /> Featured</label></div>
     <button className="admin-primary" disabled={saving}>{saving ? 'Saving...' : 'Save product'}</button>
